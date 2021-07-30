@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:layout_marginBottom="8dp">
+
+    <TextView
+        android:id="@+id/groupChannel_chat_date_admin_tV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="12dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:background="@drawable/group_chat_date_background"
+        android:text="2021년 7월 14일"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/groupChannel_chat_admin_message_tV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:gravity="center"
+        android:layout_below="@id/groupChannel_chat_date_admin_tV"
+        android:layout_gravity="center"
+        android:text="User님이 들어왔습니다."
+        android:textSize="16sp"
+        android:textColor="#000000"
+        android:background="@drawable/group_chat_admin_background"/>
+
+</RelativeLayout>

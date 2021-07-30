@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/groupChannel_room_container"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:paddingStart="14dp"
+    android:paddingEnd="14dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <ImageView
+        android:id="@+id/groupChannel_room_cover_iV"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:scaleType="centerCrop"
+        android:layout_centerVertical="true" />
+
+    <LinearLayout
+        android:id="@+id/groupChannel_room_member_text_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/groupChannel_room_cover_iV"
+        android:layout_alignTop="@id/groupChannel_room_cover_iV"
+        android:layout_marginLeft="16dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/groupChannel_room_title_tV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이재성, 이재성, 이재성, 이재성"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:maxLines="1"
+            android:maxWidth="160dp"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/groupChannel_room_member_count_tV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:gravity="center"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:text="4"
+            android:textSize="12sp"
+            android:textColor="@color/color_main"
+            android:maxLines="1"
+            android:minWidth="16dp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/groupChannel_room_message_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_below="@id/groupChannel_room_member_text_container"
+        android:layout_toEndOf="@id/groupChannel_room_cover_iV"
+        android:layout_alignLeft="@id/groupChannel_room_member_text_container"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/groupChannel_room_message_tV"
+            android:layout_width="220dp"
+            android:layout_height="32dp"
+            android:text="aslkdfhlkahsdfkjasdfasdfljlaksdjfjasdklfjlkasasdlaaaaaaaaaaaaaaaaaaaaaaaaa"
+            android:textSize="14sp"
+            android:textColor="@color/darkGray"
+            android:ellipsize="end"
+            android:maxLines="2" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/groupChannel_room_date_tV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@id/groupChannel_room_member_text_container"
+        android:textSize="12sp"
+        android:text="MM/DD"
+        android:maxLines="1" />
+
+    <TextView
+        android:id="@+id/groupChannel_room_unread_count_tV"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@id/groupChannel_room_message_container"
+        android:text="3"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:background="@drawable/channel_room_unread_count_bg" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/bgGray" />
+
+
+</RelativeLayout>

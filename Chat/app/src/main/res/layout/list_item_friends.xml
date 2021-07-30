@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:orientation="horizontal"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/friends_profile_image_iV"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/app_logo"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/friends_nickName_tV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_toStartOf="@id/friends_option_btn"
+        android:layout_toEndOf="@id/friends_profile_image_iV"
+        android:layout_centerVertical="true"
+        android:text="@string/friendNickName_text"
+        android:textAlignment="viewStart"
+        android:textColor="@color/color_main"
+        android:textSize="18sp" />
+
+    <ImageButton
+        android:id="@+id/friends_option_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/friends_options"
+        android:background="@color/white" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/bgGray"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>

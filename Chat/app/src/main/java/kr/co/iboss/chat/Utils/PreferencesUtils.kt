@@ -1,0 +1,43 @@
+package kr.co.iboss.chat.Utils
+
+import android.content.Context
+import android.content.SharedPreferences
+
+class PreferencesUtils(context: Context) {
+
+    companion object {
+        private val PREFERENCES_KEY_USER_ID             = "PREFERENCES_KEY_USER_ID"
+        private val PREFERENCES_KEY_USER_NICK_NAME      = "PREFERENCES_KEY_USER_NICK_NAME"
+        private val PREFERENCES_KEY_USER_PROFILE_IMAGE  = "PREFERENCES_KEY_USER_PROFILE_IMAGE"
+
+    }
+
+    private val preferences : SharedPreferences = context.getSharedPreferences("sendbird", Context.MODE_PRIVATE)
+
+    fun setUserId(userId : String) {
+        val editor = preferences.edit()
+        editor.putString(PREFERENCES_KEY_USER_ID, userId).apply()
+    }
+
+    fun setUserNickName(userNickName : String) {
+        val editor = preferences.edit()
+        editor.putString(PREFERENCES_KEY_USER_NICK_NAME, userNickName).apply()
+    }
+
+    fun setUserProfileImg(userProfileImage : String) {
+        val editor = preferences.edit()
+        editor.putString(PREFERENCES_KEY_USER_PROFILE_IMAGE, userProfileImage).apply()
+    }
+
+    fun getUserId() : String {
+        return preferences.getString(PREFERENCES_KEY_USER_ID, "").toString()
+    }
+
+    fun getUserNickName() : String {
+        return preferences.getString(PREFERENCES_KEY_USER_NICK_NAME, "").toString()
+    }
+
+    fun getUserProfileImage() : String {
+        return preferences.getString(PREFERENCES_KEY_USER_PROFILE_IMAGE, "").toString()
+    }
+}

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clickable="true"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:layout_marginBottom="8dp">
+
+    <View
+        android:id="@+id/groupChannel_chat_padding"
+        android:layout_width="match_parent"
+        android:layout_height="12dp"
+        android:layout_alignParentTop="true" />
+
+    <TextView
+        android:id="@+id/groupChannel_chat_date_me_tV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:background="@drawable/group_chat_date_background"
+        android:text="2021년 7월 14일"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/groupChannel_chat_me_cV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/groupChannel_chat_date_me_tV"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="4dp"
+        app:cardBackgroundColor="@color/color_main"
+        app:cardUseCompatPadding="true"
+        app:cardCornerRadius="12dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardElevation="3dp">
+
+        <TextView
+            android:id="@+id/groupChannel_chat_message_me_tV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="8dp"
+            android:text="안녕하세요안녕하세요안녕하세요"
+            android:textColor="@color/white"
+            android:maxWidth="260dp" />
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/groupChannel_chat_unread_cnt_me_tV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@id/groupChannel_chat_me_cV"
+        android:layout_above="@id/groupChannel_chat_time_me_tV"
+        android:layout_marginBottom="4dp"
+        android:text="3"
+        android:textSize="10dp"
+        android:textStyle="bold"
+        android:textColor="@color/color_main" />
+
+    <TextView
+        android:id="@+id/groupChannel_chat_time_me_tV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/groupChannel_chat_me_cV"
+        android:layout_toStartOf="@id/groupChannel_chat_me_cV"
+        android:layout_marginBottom="8dp"
+        android:text="오전 11:03"
+        android:textSize="10dp"
+        android:fontFamily="@font/nanum_regular" />
+
+</RelativeLayout>

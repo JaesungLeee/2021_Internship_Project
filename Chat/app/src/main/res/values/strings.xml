@@ -1,3 +1,48 @@
 <resources>
-    <string name="app_name">Chat</string>
+    <string name="app_name">SendBirdChat</string>
+
+    <!-- Social Login Button text -->
+    <string name="naver_login_text">네이버 계정으로 로그인</string>
+    <string name="kakao_login_text">카카오 계정으로 로그인</string>
+    <string name="facebook_login_text">페이스북 계정으로 로그인</string>
+    <string name="google_login_text">구글 계정으로 로그인</string>
+    <string name="email_login_text">이메일 또는 아이디로 로그인</string>
+
+    <!-- Email Login text -->
+    <string name="login_move_back">뒤로 가기</string>
+
+    <!-- Button text -->
+    <string name="login_btn_text">로그인</string>
+    <string name="save_btn_text">저장</string>
+    <string name="deleteFriends_btn_text">친구 삭제하기</string>
+    <string name="doChat_btn_text">채팅 하기</string>
+
+    <!-- UserInfo textView text -->
+    <string name="userInfo_top_text">내 정보</string>
+    <string name="userInfo_nickName_text">내 닉네임</string>
+    <string name="userInfo_hint_nickName_text">변경할 닉네임</string>
+
+    <!-- Chat textView text -->
+    <string name="newMessage_text">최근 메시지</string>
+    <string name="dateMessage_text">MMDD</string>
+    <string name="chatTitle_text">채팅방 이름</string>
+    <string name="chatSettings_text">채팅방 설정</string>
+    <string name="chatExit_text">나가기</string>
+
+    <!-- Settings textView text -->
+    <string name="settingsTheme_text">1. 테마 선택하기</string>
+    <string name="lightTheme_text">라이트 모드</string>
+    <string name="darkTheme_text">다크 모드</string>
+
+    <!-- Friends textView text -->
+    <string name="userNickName_text">내 닉네임</string>
+    <string name="friendNickName_text">닉네임</string>
+
+    <!-- Fragments textView text -->
+    <string name="friendsFrag_top_text">친구</string>
+    <string name="groupChatFrag_top_text">그룹 채팅</string>
+    <string name="openChatFrag_top_text">오픈 채팅</string>
+    <string name="settingsFrag_top_text">설정</string>
+
+
 </resources>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp">
+
+    <TextView
+        android:id="@+id/groupChannel_chat_date_other_tV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:layout_marginTop="24dp"
+        android:text="2021년 7월 14일"
+        android:fontFamily="@font/nanum_regular"
+        android:background="@drawable/group_chat_date_background"
+        android:gravity="center"
+        android:textSize="14sp" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/groupChannel_chat_profile_other_iV"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/groupChannel_chat_date_other_tV"
+        android:layout_marginTop="8dp"
+        android:layout_alignWithParentIfMissing="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/app_logo" />
+
+    <TextView
+        android:id="@+id/groupChannel_chat_nickName_other_tV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/groupChannel_chat_profile_other_iV"
+        android:layout_alignTop="@id/groupChannel_chat_profile_other_iV"
+        android:text="이재성"
+        android:textSize="16sp"
+        android:layout_marginStart="8dp" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/groupChannel_chat_other_cV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/groupChannel_chat_nickName_other_tV"
+        android:layout_toEndOf="@id/groupChannel_chat_profile_other_iV"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="4dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardUseCompatPadding="true"
+        app:cardCornerRadius="12dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardElevation="3dp">
+
+        <ImageView
+            android:id="@+id/groupChannel_chat_image_other_iV"
+            android:layout_width="228dp"
+            android:layout_height="148dp"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true" />
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/groupChannel_chat_unread_cnt_other_tV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/groupChannel_chat_other_cV"
+        android:layout_above="@id/groupChannel_chat_time_other_tV"
+        android:layout_marginBottom="4dp"
+        android:text="3"
+        android:textSize="10dp"
+        android:textStyle="bold"
+        android:textColor="@color/color_main" />
+
+    <TextView
+        android:id="@+id/groupChannel_chat_time_other_tV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/groupChannel_chat_other_cV"
+        android:layout_toEndOf="@id/groupChannel_chat_other_cV"
+        android:layout_marginBottom="8dp"
+        android:text="오전 11:03"
+        android:textSize="10dp"
+        android:fontFamily="@font/nanum_regular" />
+</RelativeLayout>

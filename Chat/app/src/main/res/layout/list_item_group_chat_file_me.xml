@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:layout_marginBottom="8dp">
+
+    <TextView
+        android:id="@+id/groupChannel_chat_date_me_tV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="12dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:background="@drawable/group_chat_date_background"
+        android:text="2021년 7월 14일"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:id="@+id/groupChannel_chat_file_me_lL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/groupChannel_chat_date_me_tV"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/group_chat_file_background"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center_vertical" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/attach_file" />
+
+        <TextView
+            android:id="@+id/groupChannel_chat_file_name_me_tV"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:ellipsize="middle"
+            android:singleLine="true"
+            android:text="asdfasdfasdfasdfasdfas.txt" />
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="12dp"
+            android:background="@color/color_main" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/groupChannel_chat_file_download_me_btn"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/file_download" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/groupChannel_chat_time_me_tV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10dp"
+        android:text="오전 4:43"
+        android:layout_toStartOf="@id/groupChannel_chat_file_me_lL"
+        android:layout_alignBottom="@id/groupChannel_chat_file_me_lL"
+         />
+
+    <TextView
+        android:id="@+id/groupChannel_chat_unread_cnt_me_tV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10dp"
+        android:text="2"
+        android:textColor="@color/color_main"
+        android:textStyle="bold"
+        android:layout_above="@id/groupChannel_chat_time_me_tV"
+        android:layout_alignRight="@id/groupChannel_chat_time_me_tV"
+         />
+
+
+
+</RelativeLayout>

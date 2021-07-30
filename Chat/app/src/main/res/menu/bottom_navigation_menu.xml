@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<!--    <item-->
+<!--        android:id="@+id/all_openChat_menu"-->
+<!--        android:enabled="true"-->
+<!--        android:icon="@drawable/all_open_chat"-->
+<!--        android:title="모든 채팅" />-->
+
+<!--    <item-->
+<!--        android:id="@+id/my_openChat_menu"-->
+<!--        android:enabled="true"-->
+<!--        android:icon="@drawable/group_chat"-->
+<!--        android:title="내 오픈채팅" />-->
+
+    <item
+        android:id="@+id/my_groupChat_menu"
+        android:enabled="true"
+        android:icon="@drawable/open_chat"
+        android:title="내 그룹채팅" />
+
+    <item
+        android:id="@+id/friends_menu"
+        android:enabled="true"
+        android:icon="@drawable/add_person"
+        android:title="친구" />
+
+    <item
+        android:id="@+id/settings_menu"
+        android:enabled="true"
+        android:icon="@drawable/settings"
+        android:title="설정" />
+
+</menu>
