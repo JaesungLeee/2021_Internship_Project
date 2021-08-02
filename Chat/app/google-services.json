@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "154736916886",
+    "project_id": "ibosschat-73fb1",
+    "storage_bucket": "ibosschat-73fb1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:154736916886:android:80377cf15fe7c9016985b7",
+        "android_client_info": {
+          "package_name": "kr.co.iboss.chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "154736916886-kmptr12hrh3nrppuc21eu66s3mh46r4p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYqTrGSS7msT7K9A0n3FnSmWBOejs91Gg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "154736916886-kmptr12hrh3nrppuc21eu66s3mh46r4p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -47,6 +47,13 @@
                     android:scheme="kakao3a581380c69d04ea58b7df772aaf4db7" />
             </intent-filter>
         </activity>
+        <service
+            android:name=".FCM.FCMServices"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
         <activity android:name=".UI.MainActivity" />
         <activity android:name=".UI.GroupChannel.GroupChatSettingsActivity" />
         <activity android:name=".UI.SplashScreenActivity" >
