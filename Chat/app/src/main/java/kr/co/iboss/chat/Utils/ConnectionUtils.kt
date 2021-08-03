@@ -4,6 +4,18 @@ import com.sendbird.android.SendBird
 
 object ConnectionUtils {
 
+    fun login(userId : String, handler : SendBird.ConnectHandler?) {
+        SendBird.connect(userId) { user, e ->
+            handler?.onConnected(user, e)
+        }
+    }
+
+    fun logout(handler : SendBird.DisconnectHandler?) {
+        SendBird.disconnect {
+            handler?.onDisconnected()
+        }
+    }
+
     fun addConnectionManagementHandler(handlerId : String, handler: ConnectionManagementHandler?) {
         SendBird.addConnectionHandler(handlerId, object : SendBird.ConnectionHandler {
             override fun onReconnectStarted() {
