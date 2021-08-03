@@ -1,8 +1,13 @@
 package kr.co.iboss.chat.Utils
 
 import com.sendbird.android.SendBird
+import kr.co.iboss.chat.BaseApplication
 
 object ConnectionUtils {
+
+    fun isLogin() : Boolean {
+        return PreferencesUtils(BaseApplication.instance.context()).getConnected()
+    }
 
     fun login(userId : String, handler : SendBird.ConnectHandler?) {
         SendBird.connect(userId) { user, e ->
@@ -36,7 +41,13 @@ object ConnectionUtils {
         }
 
         else if (SendBird.getConnectionState() == SendBird.ConnectionState.CLOSED) {
-            handler?.onConnected(false)
+            val userId = PreferencesUtils(BaseApplication.instance.context()).getUserId()
+            SendBird.connect(userId) { user, e ->
+                if (e != null) {
+                    return@connect
+                }
+                handler?.onConnected(false)
+            }
         }
     }
 
