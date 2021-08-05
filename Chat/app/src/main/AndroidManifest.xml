@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="kr.co.iboss.chat">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
 
     <application
         android:name=".BaseApplication"
@@ -14,7 +18,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Chat"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        tools:replace="android:allowBackup">
+
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -48,16 +54,9 @@
                     android:scheme="kakao3a581380c69d04ea58b7df772aaf4db7" />
             </intent-filter>
         </activity>
-        <service
-            android:name=".FCM.FCMServices"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
         <activity android:name=".UI.MainActivity" />
         <activity android:name=".UI.GroupChannel.GroupChatSettingsActivity" />
-        <activity android:name=".UI.SplashScreenActivity" >
+        <activity android:name=".UI.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -67,6 +66,8 @@
         <activity android:name=".UI.GroupChannel.GroupChatActivity" />
         <activity android:name=".UI.Auth.LoginHomeActivity" />
         <activity android:name=".UI.Auth.LoginActivity" />
+        <activity android:name=".UI.Media.VideoViewActivity" />
+        <activity android:name=".UI.Media.PhotoViewActivity" />
     </application>
 
 </manifest>
