@@ -8,11 +8,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.dinuscxj.progressbar.CircleProgressBar
 import com.sendbird.android.*
 import kr.co.iboss.chat.Utils.DateUtils
+import kr.co.iboss.chat.Utils.ImageUtils
 import kr.co.iboss.chat.databinding.*
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class GroupChatAdapter(private var mContext: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -27,15 +30,15 @@ class GroupChatAdapter(private var mContext: Context) : RecyclerView.Adapter<Rec
     }
 
     private var mChannel : GroupChannel? = null
-    private var messages : MutableList<BaseMessage>
-//    private var mFileMessagesMap : HashMap<FileMessage, CircleProgressBar>
+    private val messages : MutableList<BaseMessage>
+    private val mFileMessageMap: HashMap<FileMessage, CircleProgressBar>
 
     private var itemClickListener : OnItemClickListener? = null
     private var itemLongClickListener : OnItemLongClickListener? = null
 
     private var isMessageListLoading: Boolean = false
     private val failedMessages = ArrayList<String>()
-    private val tempFileMessageUriList = Hashtable<String, Uri>()
+    private val mTempFileMessageUriTable = Hashtable<String, Uri>()
 
     interface OnItemLongClickListener {
         fun onUserMessageLongClick(message : UserMessage, position: Int)
@@ -51,6 +54,7 @@ class GroupChatAdapter(private var mContext: Context) : RecyclerView.Adapter<Rec
 
     init {
         messages = ArrayList()
+        mFileMessageMap = HashMap()
     }
 
     fun setContext(context: Context) {
@@ -241,6 +245,11 @@ class GroupChatAdapter(private var mContext: Context) : RecyclerView.Adapter<Rec
         notifyDataSetChanged()
     }
 
+    fun markMessageFailed(requestId: String) {
+        failedMessages.add(requestId)
+        notifyDataSetChanged()
+    }
+
     fun removeFailedMessage(message : BaseMessage) {
         if (message is UserMessage) {
             failedMessages.remove(message.requestId)
@@ -338,13 +347,31 @@ class GroupChatAdapter(private var mContext: Context) : RecyclerView.Adapter<Rec
             }
             else if (message is FileMessage && msg is FileMessage) {
                 if (msg.requestId == message.requestId) {
-                    tempFileMessageUriList.remove(message.requestId)
+                    mTempFileMessageUriTable.remove(message.requestId)
                     messages[i] = message
                     notifyDataSetChanged()
                     return
                 }
             }
         }
+    }
+
+    fun setFileProgressPercent(message: FileMessage, percent: Int) {
+        var msg: BaseMessage
+        for (i in messages.indices.reversed()) {
+            msg = messages[i]
+            if (msg is FileMessage) {
+                if (message.requestId == msg.requestId) {
+                    val circleProgressBar = mFileMessageMap[message]
+                    circleProgressBar!!.progress = percent
+                    break
+                }
+            }
+        }
+    }
+
+    fun addTempFileMessageInfo(message: FileMessage, uri: Uri) {
+        mTempFileMessageUriTable[message.requestId] = uri
     }
 
     fun getTempFileMessageUri(message : BaseMessage) : Uri? {
@@ -354,7 +381,7 @@ class GroupChatAdapter(private var mContext: Context) : RecyclerView.Adapter<Rec
 
         return if (message is FileMessage) {
             null
-        } else tempFileMessageUriList[message.requestId]
+        } else mTempFileMessageUriTable[message.requestId]
     }
 
     /**
@@ -665,7 +692,7 @@ class GroupChatAdapter(private var mContext: Context) : RecyclerView.Adapter<Rec
             setChatTime(fileMessage)
             setChatDate(isNewDay, fileMessage)
             setUnreadCnt(channel, fileMessage, isFailedMessage, isTempMessage)
-            setImage(context, isTempMessage, tempFileMessageUri)
+            setImage(context, fileMessage, isTempMessage, tempFileMessageUri)
             setListener(fileMessage, listener)
         }
 
@@ -708,7 +735,30 @@ class GroupChatAdapter(private var mContext: Context) : RecyclerView.Adapter<Rec
             }
         }
 
-        private fun setImage(context: Context, isTempMessage: Boolean, tempFileMessageUri: Uri?) {
+        private fun setImage(context: Context, fileMessage: FileMessage, isTempMessage: Boolean, tempFileMessageUri: Uri?) {
+            val fileThumbnailImage = binding.groupChannelChatImageMeIV
+            if (isTempMessage && tempFileMessageUri != null) {
+
+                ImageUtils.displayImageFromUrl(context, tempFileMessageUri.toString(), fileThumbnailImage, null)
+            }
+            else {
+                val thumbnails = fileMessage.thumbnails as ArrayList<FileMessage.Thumbnail>
+
+                if (thumbnails.size > 0) {
+                    if (fileMessage.type.lowercase().contains("gif")) {
+                        ImageUtils.displayGifImageFromUrl(context, fileMessage.url, fileThumbnailImage, thumbnails[0].url, fileThumbnailImage.drawable)
+                    }
+                    else ImageUtils.displayImageFromUrl(context, thumbnails[0].url, fileThumbnailImage, fileThumbnailImage.drawable)
+                }
+                else {
+                    if (fileMessage.type.lowercase().contains("gif")) {
+                        ImageUtils.displayGifImageFromUrl(context, fileMessage.url, fileThumbnailImage, null as String?, fileThumbnailImage.drawable)
+                    }
+                    else {
+                        ImageUtils.displayImageFromUrl(context, fileMessage.url, fileThumbnailImage, fileThumbnailImage.drawable)
+                    }
+                }
+            }
 
         }
 
@@ -753,7 +803,22 @@ class GroupChatAdapter(private var mContext: Context) : RecyclerView.Adapter<Rec
         }
 
         private fun setImage(context: Context, fileMessage: FileMessage) {
+            val thumbnails = fileMessage.thumbnails as ArrayList<FileMessage.Thumbnail>
+            val fileThumbnailImage = binding.groupChannelChatImageOtherIV
 
+            if (thumbnails.size > 0) {
+                if (fileMessage.type.toLowerCase().contains("gif")) {
+                    ImageUtils.displayGifImageFromUrl(context, fileMessage.url, fileThumbnailImage, thumbnails[0].url, fileThumbnailImage.drawable)
+                } else {
+                    ImageUtils.displayImageFromUrl(context, thumbnails[0].url, fileThumbnailImage, fileThumbnailImage.drawable)
+                }
+            } else {
+                if (fileMessage.type.toLowerCase().contains("gif")) {
+                    ImageUtils.displayGifImageFromUrl(context, fileMessage.url, fileThumbnailImage, null as String?, fileThumbnailImage.drawable)
+                } else {
+                    ImageUtils.displayImageFromUrl(context, fileMessage.url, fileThumbnailImage, fileThumbnailImage.drawable)
+                }
+            }
         }
 
         private fun setSenderProfile(context: Context, isContinuous: Boolean, fileMessage: FileMessage) {

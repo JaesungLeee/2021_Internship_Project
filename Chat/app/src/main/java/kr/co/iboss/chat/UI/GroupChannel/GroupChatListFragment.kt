@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sendbird.android.*
+import kr.co.iboss.chat.BaseApplication
 import kr.co.iboss.chat.UI.GroupChannel.Adapter.GroupChatListAdapter
 import kr.co.iboss.chat.Utils.ConnectionUtils
 import kr.co.iboss.chat.databinding.FragmentGroupChatListBinding
@@ -24,7 +25,6 @@ import kr.co.iboss.chat.databinding.FragmentGroupChatListBinding
 class GroupChatListFragment : Fragment(), GroupChatListAdapter.OnChannelClickedListener {
 
     companion object {
-        private val INTENT_USER_ID              = "INTENT_USER_ID"
         private val EXTRA_CHANNEL_URL           = "EXTRA_CHANNEL_URL"
         private val CHANNEL_HANDLER_ID          = "CHANNEL_HANDLER_GROUP_CHANNEL_LIST"
         private val CONNECTION_HANDLER_ID       = "CONNECTION_HANDLER_GROUP_CHANNEL_LIST"
@@ -35,12 +35,19 @@ class GroupChatListFragment : Fragment(), GroupChatListAdapter.OnChannelClickedL
     private var gChannelListQuery : GroupChannelListQuery? = null
 
     private var fragGroupChatListBinding : FragmentGroupChatListBinding? = null
-    private var userId: String? = null
+    private var groupChannelUrl: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            userId = it.getString(INTENT_USER_ID)
+            groupChannelUrl = it.getString("groupChannelUrl")
+        }
+
+        if (groupChannelUrl != null) {
+            val channelIntent = Intent(BaseApplication.instance.context(), GroupChatActivity::class.java)
+            channelIntent.putExtra("groupChannelUrl", groupChannelUrl)
+            startActivity(channelIntent)
+
         }
     }
 
