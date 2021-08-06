@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">아이보스 Chat</string>
+    <!-- Chat Info text -->
+    <string name="groupChatInfo_invite_text">멤버 초대</string>
+    <string name="groupChatInfo_List_text">채팅 멤버</string>
+
 
     <!-- Social Login Button text -->
     <string name="naver_login_text">네이버 계정으로 로그인</string>

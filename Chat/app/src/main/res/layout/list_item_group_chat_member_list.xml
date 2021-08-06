@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/groupChat_member_list_container"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:paddingStart="14dp"
+    android:paddingEnd="14dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <ImageView
+        android:id="@+id/groupChat_member_profile_iV"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:scaleType="centerCrop"
+        android:layout_centerVertical="true" />
+
+    <ImageView
+        android:id="@+id/groupChat_member_blocked_iV"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_centerVertical="true"
+        android:background="@drawable/blocked_member"/>
+
+    <TextView
+        android:id="@+id/groupChat_member_nickName_tV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="200dp"
+        android:layout_toEndOf="@id/groupChat_member_profile_iV"
+        android:layout_marginStart="15dp"
+        android:layout_centerVertical="true"
+        android:text="@string/friendNickName_text"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:textAlignment="viewStart" />
+
+    <RelativeLayout
+        android:id="@+id/groupChat_member_blocked_container"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true" >
+
+        <TextView
+            android:id="@+id/groupChat_member_blocked_tV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_centerVertical="true"
+            android:text="Blocked"
+            android:textSize="12sp"
+            android:fontFamily="@font/app_font"
+            android:textColor="@color/color_main" />
+
+        <ImageView
+            android:id="@+id/groupChat_member_info_iV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/groupChat_member_blocked_tV"
+            android:layout_centerVertical="true"
+            android:background="@drawable/friends_options" />
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>
