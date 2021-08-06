@@ -251,7 +251,31 @@ class GroupChatActivity : AppCompatActivity() {
             }
         }
 
+        binding.groupChannelChatInfoBtn.setOnClickListener { showChatInfoDialog() }
+
         binding.groupChannelUploadContentsBtn.setOnClickListener { requestMedia() }
+    }
+
+    private fun showChatInfoDialog() {
+        val dialogOptions = arrayOf("멤버 초대하기", "채팅 멤버보기")
+
+        val builder = AlertDialog.Builder(this)
+        builder.setItems(dialogOptions) { dialog, which ->
+            when(which) {
+                0 -> {
+                    val intent = Intent(this, InviteGroupMemberActivity::class.java)
+                    intent.putExtra(EXTRA_CHANNEL_URL, mChannelURL)
+                    startActivity(intent)
+                }
+                1 -> {
+                    val intent = Intent(this, GroupMemberListActivity::class.java)
+                    intent.putExtra(EXTRA_CHANNEL_URL, mChannelURL)
+                    startActivity(intent)
+                }
+            }
+        }
+
+        builder.create().show()
     }
 
     private fun showMessageOptionDialog(message : BaseMessage, position: Int) {
