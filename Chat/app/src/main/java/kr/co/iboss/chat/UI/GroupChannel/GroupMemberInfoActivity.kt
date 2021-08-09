@@ -37,6 +37,7 @@ class GroupMemberInfoActivity : AppCompatActivity() {
         setContentView(view)
 
         mChannelURL = intent.getStringExtra(EXTRA_CHANNEL_URL)
+        mUserId = intent.getStringExtra(EXTRA_USER_ID)
         val nickName = intent.getStringExtra(EXTRA_USER_NICKNAME)
         val blockedByMe = intent.getBooleanExtra(EXTRA_USER_BLOCKED_BY_ME, false)
         val profileUrl = intent.getStringExtra(EXTRA_USER_PROFILE_URL)
