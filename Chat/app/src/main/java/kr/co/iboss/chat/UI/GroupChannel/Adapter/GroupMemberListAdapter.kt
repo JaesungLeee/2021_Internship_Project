@@ -1,6 +1,9 @@
 package kr.co.iboss.chat.UI.GroupChannel.Adapter
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,12 +13,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sendbird.android.Member
 import com.sendbird.android.SendBird
 import com.sendbird.android.User
+import kr.co.iboss.chat.UI.GroupChannel.GroupMemberInfoActivity
 import kr.co.iboss.chat.Utils.ImageUtils
 import kr.co.iboss.chat.databinding.ListItemGroupChatMemberListBinding
 
 class GroupMemberListAdapter(private val mContext : Context, private val mChannelURL : String, private val isGroupChannel : Boolean) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    companion object {
+        private val EXTRA_CHANNEL_URL = "EXTRA_CHANNEL_URL"
+        private val EXTRA_USER_ID = "EXTRA_USER_ID"
+        private val EXTRA_USER_PROFILE_URL = "EXTRA_USER_PROFILE_URL"
+        private val EXTRA_USER_NICKNAME = "EXTRA_USER_NICKNAME"
+        private val EXTRA_USER_BLOCKED_BY_ME = "EXTRA_USER_BLOCKED_BY_ME"
+    }
+
     private val mUserList : MutableList<User>
+    private val mMember : Member? = null
 
     init {
         mUserList = ArrayList()
@@ -70,7 +83,14 @@ class GroupMemberListAdapter(private val mContext : Context, private val mChanne
                 else {
                     binding.groupChatMemberBlockedContainer.visibility = View.VISIBLE
                     binding.groupChatMemberInfoIV.setOnClickListener {
-                        Log.e("CLICK", "TRUE")
+                        val intent = Intent(mContext, GroupMemberInfoActivity::class.java).apply {
+                            putExtra(EXTRA_CHANNEL_URL, mChannelURL)
+                            putExtra(EXTRA_USER_ID, user.userId)
+                            putExtra(EXTRA_USER_PROFILE_URL, user.profileUrl)
+                            putExtra(EXTRA_USER_NICKNAME, user.nickname)
+                            putExtra(EXTRA_USER_BLOCKED_BY_ME, (user as Member).isBlockedByMe)
+                        }
+                        mContext.startActivity(intent)
                     }
                 }
 
@@ -91,5 +111,11 @@ class GroupMemberListAdapter(private val mContext : Context, private val mChanne
             }
         }
     }
+
+
+
+
+
+
 
 }

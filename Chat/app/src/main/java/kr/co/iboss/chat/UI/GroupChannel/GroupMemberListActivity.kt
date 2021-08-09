@@ -1,5 +1,6 @@
 package kr.co.iboss.chat.UI.GroupChannel
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -20,9 +21,8 @@ class GroupMemberListActivity : AppCompatActivity() {
         private val CONNECTION_HANDLER_ID = "CONNECTION_HANDLER_MEMBER_LIST"
     }
 
-    private var adapter : GroupMemberListAdapter? = null
-    private var recyclerView : RecyclerView? = null
-    private var layoutManager : LinearLayoutManager? = null
+    private var mListAdapter : GroupMemberListAdapter? = null
+    private var mLayoutManager : LinearLayoutManager? = null
     private var mChannelURL : String? = null
     private var mChannel : GroupChannel? = null
 
@@ -38,6 +38,18 @@ class GroupMemberListActivity : AppCompatActivity() {
         mChannelURL = intent.getStringExtra(EXTRA_CHANNEL_URL)
 
         setUpRecyclerView()
+
+        buttonListener()
+    }
+
+    private fun buttonListener() {
+        binding.chatInfoNavigateBeforeBtn.setOnClickListener {
+            val intent = Intent(this, GroupChatActivity::class.java).apply {
+                putExtra(EXTRA_CHANNEL_URL, mChannelURL)
+            }
+            startActivity(intent)
+            finish()
+        }
     }
 
     override fun onResume() {
@@ -96,14 +108,14 @@ class GroupMemberListActivity : AppCompatActivity() {
             chatMemberList.add(other)
         }
 
-        adapter!!.setMemberList(chatMemberList)
+        mListAdapter!!.setMemberList(chatMemberList)
     }
 
     private fun setUpRecyclerView() {
-        adapter = GroupMemberListAdapter(this, mChannelURL!!, true)
-        recyclerView = binding.chatInfoMemberListRV
-        recyclerView!!.layoutManager = layoutManager
-        recyclerView!!.adapter = adapter
-        recyclerView!!.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        mLayoutManager = LinearLayoutManager(this)
+        mListAdapter = GroupMemberListAdapter(this, mChannelURL!!, true)
+        binding.chatInfoMemberListRV.layoutManager = mLayoutManager
+        binding.chatInfoMemberListRV.adapter = mListAdapter
+        binding.chatInfoMemberListRV.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
     }
 }
