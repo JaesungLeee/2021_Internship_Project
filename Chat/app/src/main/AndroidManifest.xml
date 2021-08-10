@@ -8,7 +8,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-
     <application
         android:name=".BaseApplication"
         android:allowBackup="false"
@@ -20,7 +19,6 @@
         android:theme="@style/Theme.Chat"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -54,8 +52,7 @@
                     android:scheme="kakao3a581380c69d04ea58b7df772aaf4db7" />
             </intent-filter>
         </activity>
-        <activity android:name=".UI.MainActivity" />
-        <activity android:name=".UI.GroupChannel.GroupChatSettingsActivity" />
+
         <activity android:name=".UI.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -63,11 +60,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UI.GroupChannel.GroupChatActivity" />
         <activity android:name=".UI.Auth.LoginHomeActivity" />
         <activity android:name=".UI.Auth.LoginActivity" />
+        <activity android:name=".UI.MainActivity" />
         <activity android:name=".UI.Media.VideoViewActivity" />
         <activity android:name=".UI.Media.PhotoViewActivity" />
+        <activity android:name=".UI.GroupChannel.GroupChatActivity" />
+        <activity android:name=".UI.GroupChannel.GroupChatSettingsActivity" />
+        <activity android:name=".UI.GroupChannel.GroupMemberInfoActivity" />
+        <activity android:name=".UI.GroupChannel.GroupMemberListActivity" />
+        <activity android:name=".UI.GroupChannel.InviteGroupMemberActivity" />
     </application>
 
 </manifest>
