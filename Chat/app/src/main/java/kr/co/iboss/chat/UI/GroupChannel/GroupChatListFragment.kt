@@ -3,15 +3,14 @@ package kr.co.iboss.chat.UI.GroupChannel
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sendbird.android.*
-import kr.co.iboss.chat.BaseApplication
 import kr.co.iboss.chat.UI.GroupChannel.Adapter.GroupChatListAdapter
 import kr.co.iboss.chat.Utils.ConnectionUtils
 import kr.co.iboss.chat.databinding.FragmentGroupChatListBinding
@@ -44,7 +43,7 @@ class GroupChatListFragment : Fragment(), GroupChatListAdapter.OnChannelClickedL
         }
 
         if (groupChannelUrl != null) {
-            val channelIntent = Intent(BaseApplication.instance.context(), GroupChatActivity::class.java)
+            val channelIntent = Intent(fragGroupChatListBinding!!.root.context, GroupChatActivity::class.java)
             channelIntent.putExtra("groupChannelUrl", groupChannelUrl)
             startActivity(channelIntent)
 

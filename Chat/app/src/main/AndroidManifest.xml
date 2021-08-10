@@ -70,6 +70,14 @@
         <activity android:name=".UI.GroupChannel.GroupMemberInfoActivity" />
         <activity android:name=".UI.GroupChannel.GroupMemberListActivity" />
         <activity android:name=".UI.GroupChannel.InviteGroupMemberActivity" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/img_notification" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/color_main" />
     </application>
 
 </manifest>

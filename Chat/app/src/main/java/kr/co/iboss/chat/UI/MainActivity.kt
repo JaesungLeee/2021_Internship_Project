@@ -1,5 +1,6 @@
 package kr.co.iboss.chat.UI
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -34,34 +35,53 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        val userID = intent.getStringExtra(INTENT_USER_ID).toString()
-        Log.e("MAIN_INTENT", userID)
-        initFragmentNavigation(userID)
+        initFragmentNavigation()
+        checkIntentExtra()
     }
 
-    private fun initFragmentNavigation(userID: String) {
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        checkIntentExtra()
+    }
+
+    private fun initFragmentNavigation() {
         binding.mainBottomNavigation.run {
             setOnNavigationItemSelectedListener {
                 when(it.itemId) {
 //                    R.id.all_openChat_menu  -> setDataAtFragment(allOpenChatListFragment, userID)
 //                    R.id.my_openChat_menu   -> setDataAtFragment(openChatListFragment, userID)
-                    R.id.my_groupChat_menu  -> setDataAtFragment(groupChatListFragment, userID)
-                    R.id.friends_menu       -> setDataAtFragment(friendsFragment, userID)
-                    R.id.settings_menu      -> setDataAtFragment(settingsFragment, userID)
+                    R.id.my_groupChat_menu  -> checkIntentExtra()
+                    R.id.friends_menu       -> changeFragment(friendsFragment)
+                    R.id.settings_menu      -> changeFragment(settingsFragment)
                 }
                 true
             }
             selectedItemId = R.id.my_groupChat_menu
         }
     }
+    private fun checkIntentExtra() {
+        val fragment = groupChatListFragment
+        if (intent.hasExtra("groupChannelUrl")) {
+            val extraChannelUrl = intent.getStringExtra("groupChannelUrl")
+            Log.e("EXTRA", extraChannelUrl!!.toString())
+            val bundle = Bundle()
+            bundle.putString("groupChannelUrl", extraChannelUrl)
+            fragment.arguments = bundle
 
-    private fun setDataAtFragment(fragment: Fragment, userID: String) {
-        val bundle = Bundle()
-        bundle.putString(INTENT_USER_ID, userID)
-
-        fragment.arguments = bundle
+            changeFragment(fragment)
+        }
+        Log.e("EXTRA", "NOT YET")
         changeFragment(fragment)
     }
+
+//    private fun setDataAtFragment(fragment: Fragment, userID: String) {
+//        val bundle = Bundle()
+//        bundle.putString(INTENT_USER_ID, userID)
+//
+//        fragment.arguments = bundle
+//
+//    }
 
     private fun changeFragment(fragment : Fragment) {
         supportFragmentManager.beginTransaction()

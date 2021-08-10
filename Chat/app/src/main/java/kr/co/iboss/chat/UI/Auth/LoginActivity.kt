@@ -7,12 +7,14 @@ import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
 import com.sendbird.android.SendBird
+import kr.co.iboss.chat.FCM.MyFirebaseMessagingService
 import kr.co.iboss.chat.HTTP.DTO.EmailRequestDTO
 import kr.co.iboss.chat.HTTP.LoginResponse
 import kr.co.iboss.chat.HTTP.RetrofitClient
-import kr.co.iboss.chat.R
 import kr.co.iboss.chat.UI.MainActivity
+import kr.co.iboss.chat.Utils.ConnectionUtils
 import kr.co.iboss.chat.Utils.PreferencesUtils
+import kr.co.iboss.chat.Utils.PushUtils
 import kr.co.iboss.chat.databinding.ActivityLoginBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -48,18 +50,13 @@ class LoginActivity : AppCompatActivity() {
 
             val loginRequestParams = EmailRequestDTO( id = inputId, pw= inputPW)
 
-            Log.e("PARAMS2", loginRequestParams.toString())
             if (!TextUtils.isEmpty(inputId) && !TextUtils.isEmpty(inputPW)) {
                 Log.e("LOGIN_RETROFIT", "START ACTION")
 
                 RetrofitClient.instance.userLogin(loginRequestParams)
                     .enqueue(object : Callback<LoginResponse> {
                         override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                            Log.e("First", response.body().toString())
                             if (response.isSuccessful) {
-                                Log.e("C", response.code().toString())
-                                Log.e("D", response.message().toString())
-                                Log.e("RESPONSE", response.body().toString())
                                 if (response.code() == 200) {
                                     val loginResponse = response.body()
 
@@ -68,7 +65,7 @@ class LoginActivity : AppCompatActivity() {
                                     val userNickName = loginResponse.data.userNickName
                                     val userProfileImage = loginResponse.data.userProfileImage
 
-                                    setUserInfo(userID, userNickName, userProfileImage)
+
                                     connectWithSendBird(userID, userNickName, userProfileImage)
                                 }
                             }
@@ -92,6 +89,22 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+
+
+    private fun connectWithSendBird(userId : String, userNickName: String, userProfileImg: String) {
+        ConnectionUtils.login(userId) { user, e ->
+            if (e != null) {
+                Log.e("SENDBIRD_CONNECT_ERR", "Code - ${e.code} \nMessage - ${e.message}")
+            }
+
+            PreferencesUtils(this).setConnected(true)
+            PushUtils.registerPushHandler(MyFirebaseMessagingService())
+            updateCurrentUserInfo(userId, userNickName, userProfileImg)
+
+        }
+    }
+
+
     private fun setUserInfo(userId: String, userNickName: String, userProfileImg : String) {
         PreferencesUtils(this).apply {
             setUserId(userId)
@@ -100,20 +113,14 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun connectWithSendBird(userId : String, userNickName: String, userProfileImg: String) {
-        SendBird.connect(userId) { user, e ->
-            if (e != null) {
-                Log.e("SENDBIRD_CONNECT_ERR", "Code - ${e.code} \nMessage - ${e.message}")
-            }
+    private fun updateCurrentUserInfo(userId: String, userNickName: String, userProfileImg: String) {
+        SendBird.updateCurrentUserInfo(userNickName, userProfileImg) {
 
-            SendBird.updateCurrentUserInfo(userNickName, userProfileImg) {
-                val intent = Intent(this, MainActivity::class.java).apply {
-                    putExtra(INTENT_USER_ID, userId)
-                }
-                startActivity(intent)
-                finish()
-            }
+            setUserInfo(userId, userNickName, userProfileImg)
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
         }
-
     }
+
 }

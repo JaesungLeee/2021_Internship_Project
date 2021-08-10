@@ -25,12 +25,15 @@ import com.kakao.sdk.user.UserApiClient
 import com.nhn.android.naverlogin.OAuthLogin
 import com.nhn.android.naverlogin.OAuthLoginHandler
 import com.sendbird.android.SendBird
+import kr.co.iboss.chat.FCM.MyFirebaseMessagingService
 import kr.co.iboss.chat.HTTP.DTO.SocialRequestDTO
 import kr.co.iboss.chat.HTTP.LoginResponse
 import kr.co.iboss.chat.HTTP.RetrofitClient
 import kr.co.iboss.chat.R
 import kr.co.iboss.chat.UI.MainActivity
+import kr.co.iboss.chat.Utils.ConnectionUtils
 import kr.co.iboss.chat.Utils.PreferencesUtils
+import kr.co.iboss.chat.Utils.PushUtils
 import kr.co.iboss.chat.databinding.ActivityLoginHomeBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -291,7 +294,6 @@ class LoginHomeActivity : AppCompatActivity() {
                             val userNickName = loginResponse.data.userNickName
                             val userProfileImage = loginResponse.data.userProfileImage
 
-                            setUserInfo(userID, userNickName, userProfileImage)
                             connectWithSendBird(userID, userNickName, userProfileImage)
                         }
                     }
@@ -313,22 +315,26 @@ class LoginHomeActivity : AppCompatActivity() {
     }
 
     private fun connectWithSendBird(userID: String, userNickName: String, userProfileImage: String) {
-        SendBird.connect(userID) { user, e ->
+        ConnectionUtils.login(userID) { user, e ->
             if (e != null) {
                 Log.e("SENDBIRD_CONNECT_ERR", "Code ${e.code} : ${e.message}")
             }
+            PreferencesUtils(this).setConnected(true)
+            PushUtils.registerPushHandler(MyFirebaseMessagingService())
+            updateCurrentUserInfo(userID, userNickName, userProfileImage)
 
-            SendBird.updateCurrentUserInfo(userNickName, userProfileImage) {
-                movePage(userID)
-            }
         }
     }
 
-    private fun movePage(userID : String) {
-        val intent = Intent(this, MainActivity::class.java).apply {
-            putExtra(INTENT_USER_ID, userID)
-        }
-        startActivity(intent)
-        finish()
+
+    private fun updateCurrentUserInfo(userID: String, userNickName: String, userProfileImage: String) {
+       SendBird.updateCurrentUserInfo(userNickName, userProfileImage) {
+           setUserInfo(userID, userNickName, userProfileImage)
+
+           val intent = Intent(this, MainActivity::class.java)
+           startActivity(intent)
+           finish()
+       }
+
     }
 }
