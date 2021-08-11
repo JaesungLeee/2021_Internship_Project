@@ -1,10 +1,10 @@
-package kr.co.iboss.ibosschat
+package kr.co.iboss.ibosschat.UI
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.webkit.WebChromeClient
 import android.webkit.WebView
-import android.webkit.WebViewClient
+import kr.co.iboss.ibosschat.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
