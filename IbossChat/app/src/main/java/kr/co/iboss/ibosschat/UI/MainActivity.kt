@@ -5,19 +5,19 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
-import android.webkit.WebChromeClient
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import kr.co.iboss.ibosschat.WebAppInterface
 import kr.co.iboss.ibosschat.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), WebAppInterface.BridgeListener {
 
     companion object {
         fun checkInternet(context: Context): Boolean {
@@ -50,6 +50,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityMainBinding
     private lateinit var mWebView: WebView
     private lateinit var mProgressBar : ProgressBar
+    private val bridge = WebAppInterface()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,11 +65,33 @@ class MainActivity : AppCompatActivity() {
         mWebView = mBinding.ibossWV
         mProgressBar = mBinding.progressBar
 
+
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            val cookieManager = CookieManager.getInstance()
+//            cookieManager.setAcceptCookie(true)
+//            cookieManager.setAcceptThirdPartyCookies(mWebView, true)
+//        }
+//        else {
+//            CookieSyncManager.createInstance(mContext)
+//        }
+        CookieSyncManager.createInstance(this)
         requestWebView()
 
 
     }
 
+    override fun onPause() {
+        super.onPause()
+        CookieSyncManager.getInstance().stopSync()
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+//            CookieSyncManager.getInstance().stopSync()
+//        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        CookieSyncManager.getInstance().startSync()
+    }
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK && mWebView.canGoBack()) {
             mWebView.goBack()
@@ -78,7 +101,7 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint("SetJavaScriptEnabled", "JavascriptInterface")
     private fun requestWebView(){
 
         if (checkInternet(mContext)) {
@@ -91,8 +114,10 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
+
         mWebView.isFocusable = true
         mWebView.isFocusableInTouchMode = true
+        mWebView.addJavascriptInterface(bridge, "AndroidBridge")
         mWebView.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
         mWebView.settings.apply {
             javaScriptEnabled = true
@@ -103,6 +128,7 @@ class MainActivity : AppCompatActivity() {
             databaseEnabled = true
             setSupportMultipleWindows(false)
         }
+        bridge.setListener(this)
 
         mWebView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String?): Boolean {
@@ -130,14 +156,23 @@ class MainActivity : AppCompatActivity() {
 
             override fun onPageFinished(view: WebView, url: String) {
                 Log.e("onPageFinished :", "URL : $url")
+
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                    CookieSyncManager.getInstance().sync()
+                }
+                else CookieManager.getInstance().flush()
+
                 super.onPageFinished(view, url)
 
             }
 
             override fun onLoadResource(view: WebView, url: String) {
-                Log.e("onLoadResource :", "URL : $url")
                 super.onLoadResource(view, url)
             }
         }
+    }
+
+    override fun passChannel(groupChannel: String) {
+        Log.e(EXTRA_URL, groupChannel)
     }
 }
