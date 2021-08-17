@@ -43,10 +43,9 @@ class MainActivity : AppCompatActivity(), WebAppInterface.BridgeListener {
 
     private var LOG_TAG = "MainActivity :"
     private var EXTRA_URL = "groupChannelUrl"
-    private var URL = "https://chat.i-boss.co.kr/login"
+    private var URL = "https://chat.i-boss.co.kr/"
 
     private lateinit var mContext : Context
-    private var mChannelURL: String? = null
     private lateinit var mBinding: ActivityMainBinding
     private lateinit var mWebView: WebView
     private lateinit var mProgressBar : ProgressBar
@@ -59,39 +58,25 @@ class MainActivity : AppCompatActivity(), WebAppInterface.BridgeListener {
         val view = mBinding.root
         setContentView(view)
 
-        mChannelURL = intent.getStringExtra(EXTRA_URL).toString()
 
         mContext = this
         mWebView = mBinding.ibossWV
         mProgressBar = mBinding.progressBar
 
+        val extraBundle = intent.extras
+        if (extraBundle != null) {
+            if (extraBundle.getString(EXTRA_URL) != null && !extraBundle.getString(EXTRA_URL).equals("")) {
+                URL = "https://chat.i-boss.co.kr/chatting/${extraBundle.getString(EXTRA_URL)}/false"
+                Log.e(LOG_TAG, "FCM URL")
+            }
+        }
 
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            val cookieManager = CookieManager.getInstance()
-//            cookieManager.setAcceptCookie(true)
-//            cookieManager.setAcceptThirdPartyCookies(mWebView, true)
-//        }
-//        else {
-//            CookieSyncManager.createInstance(mContext)
-//        }
-        CookieSyncManager.createInstance(this)
+
         requestWebView()
 
 
     }
 
-    override fun onPause() {
-        super.onPause()
-        CookieSyncManager.getInstance().stopSync()
-//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-//            CookieSyncManager.getInstance().stopSync()
-//        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        CookieSyncManager.getInstance().startSync()
-    }
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK && mWebView.canGoBack()) {
             mWebView.goBack()
@@ -105,6 +90,7 @@ class MainActivity : AppCompatActivity(), WebAppInterface.BridgeListener {
     private fun requestWebView(){
 
         if (checkInternet(mContext)) {
+            Log.e(LOG_TAG, "loading")
             mWebView.loadUrl(URL)
         }
         else {
