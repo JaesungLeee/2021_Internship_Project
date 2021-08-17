@@ -1,0 +1,61 @@
+# Sendbird - Android 개발 문서
+
+## Index
+### 1. [Requirements](#requirements)
+### 2. [Libraries](#libraries)
+### 3. [Permissions](#permissions)
+
+<br>
+
+
+## Requirements
+---
+<br>
+
+| Requirements | Version |
+| ----------- | ----------- |
+| Android Studio | `4.2.2` |
+| Language | `Kotlin (1.5.10)` |
+| Gradle Version | `6.7.1` | 
+| JDK Version | `1.8 (JDK_1_8)` |
+| Android Emulator | `30.7.4` |
+
+| SDK | Version |
+| --- | --------|
+| minSDK | `23 (Android 6.0)` |
+| targetSDK | `30 (Android 11)` |
+| Android SDK Build-Tools | `31-rc5` |
+| Android SDK Platform | `Android 11.0(R), API Level 30` |
+| Android SDK Platform-Tools | `31.0.2` |
+
+<br>
+
+
+## Libraries
+---
+<br>
+
+| Types | Libraries | Version |
+| --------- | :------- | -----------: |
+| Sendbird SDK | com.sendbird.sdk:sendbird-android-sdk:`{VERSION}` | `3.0.166` |
+| Retrofit | com.squareup.retrofit2:retrofit:`{VERSION}` | `2.9.0` |
+| | com.squareup.retrofit2:converter-gson:`{VERSION}` | `2.9.0` | 
+| | com.google.code.gson:gson:`{VERSION}` | `2.8.7` |
+| Glide | com.github.bumptech.glide:glide:`{VERSION}` | `4.12.0` | 
+| | kapt "android.arch.lifecycle:compiler:`{VERSION}` | `1.0.0` | 
+| | kapt 'com.github.bumptech.glide:compiler:`{VERSION}` | `4.12.0` | 
+| Google Social | com.google.android.gms:play-services-auth:`{VERSION}` | `19.2.0` |
+| Facebook Social | com.facebook.android:facebook-login:`{VERSION}` | `8.2.0` |
+| Kakao Social | implementation group: 'com.kakao.sdk', name: 'usermgmt', version:`{VERSION}` | `1.30.0` |
+| | com.kakao.sdk:v2-user:`{VERSION}` | `2.5.0` |
+| Naver Social | com.naver.nid:naveridlogin-android-sdk:`{VERSION}` | `4.2.6` |
+| FCM Push Notification | com.google.firebase:firebase-core:`{VERSION}` | `19.0.0` |
+| | com.google.firebase:firebase-messaging:`{VERSION}` | `22.0.0` |
+| Progressbar | com.dinuscxj:circleprogressbar:`{VERSION}` | `1.3.6` |
+
+
+<br>
+
+## Permissions
+---
+
