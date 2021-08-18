@@ -5,19 +5,17 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.webkit.*
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kr.co.iboss.ibosschat.WebAppInterface
 import kr.co.iboss.ibosschat.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity(), WebAppInterface.BridgeListener {
+class MainActivity : AppCompatActivity() {
 
     companion object {
         fun checkInternet(context: Context): Boolean {
@@ -49,7 +47,7 @@ class MainActivity : AppCompatActivity(), WebAppInterface.BridgeListener {
     private lateinit var mBinding: ActivityMainBinding
     private lateinit var mWebView: WebView
     private lateinit var mProgressBar : ProgressBar
-    private val bridge = WebAppInterface()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,6 +87,8 @@ class MainActivity : AppCompatActivity(), WebAppInterface.BridgeListener {
     @SuppressLint("SetJavaScriptEnabled", "JavascriptInterface")
     private fun requestWebView(){
 
+        val bridge = WebAppInterface(mContext)
+
         if (checkInternet(mContext)) {
             Log.e(LOG_TAG, "loading")
             mWebView.loadUrl(URL)
@@ -99,7 +99,6 @@ class MainActivity : AppCompatActivity(), WebAppInterface.BridgeListener {
 
             return
         }
-
 
         mWebView.isFocusable = true
         mWebView.isFocusableInTouchMode = true
@@ -114,7 +113,6 @@ class MainActivity : AppCompatActivity(), WebAppInterface.BridgeListener {
             databaseEnabled = true
             setSupportMultipleWindows(false)
         }
-        bridge.setListener(this)
 
         mWebView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String?): Boolean {
@@ -142,12 +140,6 @@ class MainActivity : AppCompatActivity(), WebAppInterface.BridgeListener {
 
             override fun onPageFinished(view: WebView, url: String) {
                 Log.e("onPageFinished :", "URL : $url")
-
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                    CookieSyncManager.getInstance().sync()
-                }
-                else CookieManager.getInstance().flush()
-
                 super.onPageFinished(view, url)
 
             }
@@ -158,7 +150,4 @@ class MainActivity : AppCompatActivity(), WebAppInterface.BridgeListener {
         }
     }
 
-    override fun passChannel(groupChannel: String) {
-        Log.e(EXTRA_URL, groupChannel)
-    }
 }
