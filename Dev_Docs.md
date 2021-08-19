@@ -4,6 +4,7 @@
 ### 1. [Requirements](#requirements)
 ### 2. [Libraries](#libraries)
 ### 3. [Permissions](#permissions)
+### 4. [Main Function](#main-function)
 
 <br>
 
@@ -34,7 +35,7 @@
 <br>
 
 | Libraries | Implementation | Version |
-| --------- | :------- | -----------: |
+| --------- | ------- | ----------- |
 | Sendbird SDK | com.sendbird.sdk:sendbird-android-sdk:`{VERSION}` | `3.0.166` |
 | Retrofit | com.squareup.retrofit2:retrofit:`{VERSION}` | `2.9.0` |
 | | com.squareup.retrofit2:converter-gson:`{VERSION}` | `2.9.0` | 
@@ -64,8 +65,15 @@
 
 ### Implementation
 ```
+// AndroidManifest.xml
+
 <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.VIBRATE" />
 <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 ```
+
+<br>
+
+## Main Function
+https://crawling-house-807.notion.site/Sendbird-Android-53f92d2ee0ec41f287e0e55eecdea13c
