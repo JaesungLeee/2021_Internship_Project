@@ -26,6 +26,7 @@ class BaseApplication : Application() {
 
         KakaoSdk.init(this, getString(R.string.kakao_app_key))
 
+        // 푸시 디바이스 토큰 등록
         PushUtils.registerPushHandler(MyFirebaseMessagingService())
     }
 

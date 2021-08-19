@@ -30,24 +30,28 @@ class MyFirebaseMessagingService : SendBirdPushHandler() {
         private val FCM_TAG = "MyFirebaseMsgService"
     }
 
+    /* FCM을 이용해 토큰이 발급되었을 때 Sendbird 서버로 전송하기 위한 interface */
     interface ITokenResult {
         fun onPushTokenReceived(pushToken: String, e: SendBirdException?)
     }
 
+    /* 토큰 */
     private val mPushToken = AtomicReference<String>()
 
     override fun onMessageReceived(context: Context?, remoteMessage: RemoteMessage?) {
         Log.d(FCM_TAG, "From: " + remoteMessage!!.from)
 
+        // 푸시 메시지 페이로드 확인
         if (remoteMessage!!.data.isNotEmpty()) {
             Log.d(FCM_TAG, "Message data payload: " + remoteMessage!!.data)
         }
 
-
+        // 푸시 메시지 Body 확인
         if (remoteMessage!!.notification != null) {
             Log.d(FCM_TAG, "Message Notification Body: " + remoteMessage!!.notification!!.body)
         }
 
+        // 푸시 메시지 파싱
         var channelUrl: String? = null
         try {
             if (remoteMessage!!.data.containsKey("sendbird")) {
@@ -72,19 +76,27 @@ class MyFirebaseMessagingService : SendBirdPushHandler() {
         mPushToken.set(newToken)
     }
 
+    /**
+     * Notification Builder 생성
+     * 디바이스 별 API Level에 따라 Notification을 다르게 생성 처리 해야함
+     */
     private fun sendNotification(context: Context?, messageBody: String?, channelUrl : String) {
         val notificationManager = context!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         val CHANNEL_ID = "CHANNEL_ID"
+
+        // API LEVEL 26 이상
         if (Build.VERSION.SDK_INT >= 26) {
             val mChannel =
                 NotificationChannel(CHANNEL_ID, "아이보스 채팅 푸시", NotificationManager.IMPORTANCE_HIGH)
             notificationManager.createNotificationChannel(mChannel)
         }
 
+        // 푸시 메시지 클릭 시 groupChannelURL에 해당하는 채팅바응로 이동하기 위한 Intent
         val intent = Intent(context, SplashScreenActivity::class.java)
         intent.putExtra("groupChannelUrl", channelUrl)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
         val pendingIntent = PendingIntent.getActivity(context, 0 , intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
