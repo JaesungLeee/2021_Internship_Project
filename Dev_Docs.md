@@ -76,4 +76,4 @@
 <br>
 
 ## Main Function
-https://crawling-house-807.notion.site/Sendbird-Android-53f92d2ee0ec41f287e0e55eecdea13c
+https://dev-wotjd.notion.site/Sendbird-Android-53f92d2ee0ec41f287e0e55eecdea13c
