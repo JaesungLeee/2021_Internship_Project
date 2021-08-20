@@ -23,6 +23,7 @@ class SplashScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
+        // 최근 실행 앱 목록에서 실행되었을 경우 gropuChannelUrl을 제거 즉, Push 상태일 때만 groupChannelurl 사용
         if (intent != null && intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY == Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) {
             intent.removeExtra("groupChannelUrl")
         }
@@ -54,6 +55,7 @@ class SplashScreenActivity : AppCompatActivity() {
         }
     }
 
+    /* 로그인 상태일 때 groupChannelUrl 전달 */
     private fun handleNextIntent(): Intent {
         if (ConnectionUtils.isLogin()) {
             val intent = Intent(this, MainActivity::class.java)
