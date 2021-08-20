@@ -34,9 +34,10 @@
     <string name="chatExit_text">나가기</string>
 
     <!-- Settings textView text -->
-    <string name="settingsTheme_text">1. 테마 선택하기</string>
-    <string name="lightTheme_text">라이트 모드</string>
-    <string name="darkTheme_text">다크 모드</string>
+    <string name="settingsTheme_text">테마</string>
+    <string name="lightTheme_text">라이트</string>
+    <string name="darkTheme_text">다크</string>
+    <string name="logout_text">로그아웃</string>
 
     <!-- Friends textView text -->
     <string name="userNickName_text">내 닉네임</string>

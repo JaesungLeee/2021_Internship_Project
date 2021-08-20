@@ -1,54 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.Fragments.FriendsFragment">
-
-    <LinearLayout
-        android:id="@+id/friends_fragment_top_layout"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_alignParentTop="true"
-        android:orientation="horizontal"
-        android:background="@color/bgGray">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_gravity="center"
-            android:text="@string/friendsFrag_top_text"
-            android:textSize="28sp"
-            android:textColor="@color/color_main"
-            android:fontFamily="@font/nanum_bold" />
-
-    </LinearLayout>
-
-    <View
-        android:id="@+id/friends_fragment_divide_view"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_below="@id/friends_fragment_top_layout"
-        android:background="@color/darkGray"/>
-
+    tools:context=".UI.Friends.FriendsFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/friends_fragment_divide_view"
         android:orientation="vertical" >
 
-        <androidx.recyclerview.widget.RecyclerView
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:paddingBottom="4dp"
-            android:clipToPadding="false"
-            android:scrollbars="vertical" />
+            android:layout_height="80dp" >
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_centerVertical="true"
+                android:text="@string/friendsFrag_top_text"
+                android:textSize="28sp"
+                android:textColor="@color/color_main"
+                android:fontFamily="@font/nanum_bold" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/color_main" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/friendsFrag_friendsList_rV"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:paddingBottom="4dp"
+                android:clipToPadding="false"
+                android:scrollbars="vertical"
+                android:orientation="vertical" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
 
 
-</RelativeLayout>
+
+
+</FrameLayout>
