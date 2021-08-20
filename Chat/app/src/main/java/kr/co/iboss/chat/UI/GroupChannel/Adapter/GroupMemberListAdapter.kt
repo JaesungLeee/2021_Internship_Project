@@ -66,15 +66,15 @@ class GroupMemberListAdapter(private val mContext : Context, private val mChanne
             setBlocked(user)
 
         }
-        fun setMemberProfileImage(context: Context, user: User) {
+        private fun setMemberProfileImage(context: Context, user: User) {
             ImageUtils.displayRoundImageFromUrl(context, user.profileUrl, binding.groupChatMemberProfileIV)
         }
 
-        fun setMemberNickName(user: User) {
+        private fun setMemberNickName(user: User) {
             binding.groupChatMemberNickNameTV.text = user.nickname
         }
 
-        fun setBlocked(user: User) {
+        private fun setBlocked(user: User) {
             if (isGroupChannel) {
                 if (SendBird.getCurrentUser().userId == user.userId) {
                     binding.groupChatMemberBlockedContainer.visibility = View.GONE
