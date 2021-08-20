@@ -75,6 +75,11 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onDestroy() {
+        URL = "https://chat.i-boss.co.kr/"
+        super.onDestroy()
+    }
+
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK && mWebView.canGoBack()) {
             mWebView.goBack()
@@ -102,7 +107,6 @@ class MainActivity : AppCompatActivity() {
 
         mWebView.isFocusable = true
         mWebView.isFocusableInTouchMode = true
-        mWebView.addJavascriptInterface(bridge, "AndroidBridge")
         mWebView.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
         mWebView.settings.apply {
             javaScriptEnabled = true
@@ -113,6 +117,7 @@ class MainActivity : AppCompatActivity() {
             databaseEnabled = true
             setSupportMultipleWindows(false)
         }
+        mWebView.addJavascriptInterface(bridge, "AndroidBridge")
 
         mWebView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String?): Boolean {
