@@ -7,4 +7,8 @@ object PushUtils {
     fun registerPushHandler(handler : SendBirdPushHandler) {
         SendBirdPushHelper.registerPushHandler(handler)
     }
+
+    fun unregisterPushHandler(listener : SendBirdPushHelper.OnPushRequestCompleteListener) {
+        SendBirdPushHelper.unregisterPushHandler(listener)
+    }
 }

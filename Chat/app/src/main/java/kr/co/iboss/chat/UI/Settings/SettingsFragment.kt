@@ -1,12 +1,20 @@
 package kr.co.iboss.chat.UI.Settings
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kr.co.iboss.chat.R
+import androidx.fragment.app.Fragment
+import com.sendbird.android.SendBird.DisconnectHandler
+import com.sendbird.android.SendBirdException
+import com.sendbird.android.SendBirdPushHelper.OnPushRequestCompleteListener
+import kr.co.iboss.chat.BaseApplication
+import kr.co.iboss.chat.UI.Auth.LoginHomeActivity
+import kr.co.iboss.chat.Utils.ConnectionUtils
+import kr.co.iboss.chat.Utils.PreferencesUtils
+import kr.co.iboss.chat.Utils.PushUtils
+import kr.co.iboss.chat.databinding.FragmentSettingsBinding
 
 /**
  * A simple [Fragment] subclass.
@@ -15,27 +23,51 @@ import kr.co.iboss.chat.R
  */
 class SettingsFragment : Fragment() {
 
-    companion object {
-        private val INTENT_USER_ID              = "INTENT_USER_ID"
-    }
+    private var mFragSettingsBinding : FragmentSettingsBinding? = null
 
-    private var userId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            userId = it.getString(INTENT_USER_ID)
+            //userId = it.getString(INTENT_USER_ID)
         }
 
-        Log.e("SETTINGS_FRAG_INTENT", "id : $userId")
+        //Log.e("SETTINGS_FRAG_INTENT", "id : $userId")
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false)
+        val binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        mFragSettingsBinding = binding
+        return mFragSettingsBinding!!.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        buttonListener()
+    }
+
+    private fun buttonListener() {
+        mFragSettingsBinding!!.settingsFragLogoutBtn.setOnClickListener {
+            logout()
+        }
+    }
+
+    private fun logout() {
+        PushUtils.unregisterPushHandler(object : OnPushRequestCompleteListener {
+            override fun onComplete(isActive: Boolean, token: String?) {
+                ConnectionUtils.logout(DisconnectHandler {
+                    PreferencesUtils(mFragSettingsBinding!!.root.context).setConnected(false)
+                    val intent = Intent(BaseApplication.instance.context(), LoginHomeActivity::class.java)
+                    startActivity(intent)
+
+                    activity?.finish()
+                })
+            }
+
+            override fun onError(e: SendBirdException) {}
+        })
     }
 
 
