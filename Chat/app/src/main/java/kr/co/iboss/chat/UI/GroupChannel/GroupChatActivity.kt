@@ -76,12 +76,12 @@ class GroupChatActivity : AppCompatActivity() {
         Log.e("URL", mChannelURL)
 
 
+        setChannelTitle()
         setUpRecyclerView()
         setUpChatListAdapter()
 
         textListener()
         buttonHandler()
-
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -568,5 +568,10 @@ class GroupChatActivity : AppCompatActivity() {
     private fun getChannelURL(): String {
         val intent = this.intent
         return intent.getStringExtra(EXTRA_CHANNEL_URL)!!
+    }
+
+    private fun setChannelTitle() {
+        val channelName = intent.getStringExtra("Aa").toString()
+        binding.groupChannelChatTitleTV.text = channelName
     }
 }

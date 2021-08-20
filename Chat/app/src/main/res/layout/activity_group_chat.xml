@@ -24,14 +24,6 @@
             android:layout_height="32dp"
             android:layout_gravity="center"/>
 
-        <TextView
-            android:id="@+id/groupChannel_message_count_tV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="10"
-            android:textAlignment="center"
-            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/groupChannel_chatTitle_tV"

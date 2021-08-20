@@ -186,6 +186,7 @@ class GroupChatListFragment : Fragment(), GroupChatListAdapter.OnChannelClickedL
         activity?.let {
             val intent = Intent(fragGroupChatListBinding!!.root.context, GroupChatActivity::class.java).apply {
                 putExtra(EXTRA_CHANNEL_URL, channel.url)
+                putExtra("Aa", channel.name)
             }
             startActivity(intent)
         }
