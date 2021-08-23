@@ -4,6 +4,10 @@
     <string name="groupChatInfo_invite_text">멤버 초대</string>
     <string name="groupChatInfo_List_text">채팅 멤버</string>
 
+    <!-- Invite Members test -->
+    <string name="inviteGroupMember_btn_text">초대하기</string>
+    <string name="inviteGroupMember_text">멤버 초대하기</string>
+
 
     <!-- Social Login Button text -->
     <string name="naver_login_text">네이버 계정으로 로그인</string>

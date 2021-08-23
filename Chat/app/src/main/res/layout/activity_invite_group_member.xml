@@ -8,7 +8,7 @@
     tools:context=".UI.GroupChannel.InviteGroupMemberActivity">
 
     <RelativeLayout
-        android:id="@+id/groupMember_invite_topView"
+        android:id="@+id/groupMember_invite_container"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_alignParentTop="true"
@@ -32,19 +32,43 @@
             android:layout_centerVertical="true"
             android:layout_toEndOf="@id/groupMember_invite_navigateBefore_btn"
             android:layout_marginStart="10dp"
-            android:text="멤버 초대하기"
+            android:text="@string/inviteGroupMember_text"
             android:textSize="28sp"
             android:textColor="@color/color_main"
             android:fontFamily="@font/nanum_bold" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/groupMember_invite_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true"
+            android:text="@string/inviteGroupMember_btn_text"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:fontFamily="@font/nanum_regular"
+            android:background="@drawable/rectangle_login_btn"
+            android:backgroundTint="@color/color_main"
+            android:clickable="true"
+            android:focusable="true"/>
 
     </RelativeLayout>
 
+    <View
+        android:id="@+id/inviteGroupMember_divide_view"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/color_main"
+        android:layout_below="@id/groupMember_invite_container"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/inviteGroupMember_memberList_rV"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/inviteGroupMember_divide_view"
+        android:layout_margin="4dp"
+        android:scrollbars="vertical" />
 
 </RelativeLayout>
