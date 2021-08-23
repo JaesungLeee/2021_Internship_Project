@@ -12,12 +12,12 @@ import kr.co.iboss.chat.UI.GroupChannel.GroupChatListFragment
 import kr.co.iboss.chat.UI.Settings.SettingsFragment
 import kr.co.iboss.chat.databinding.ActivityMainBinding
 
+/*
+ * 각 Fragment (GroupChatListFragment, FriendsFragment, SettingsFragment)의 Host Activity
+ * UI로 BottomNavigationBar 구현
+ * Fragment 전환, Data 전달 지원
+ */
 class MainActivity : AppCompatActivity() {
-
-    companion object {
-        private val INTENT_USER_ID              = "INTENT_USER_ID"
-    }
-
 
     //    private val allOpenChatListFragment by lazy { AllOpenChatListFragment() }
     private val friendsFragment by lazy { FriendsFragment() }
@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         checkIntentExtra()
     }
 
+    /* BottomNavigationBar 세팅 */
     private fun initFragmentNavigation() {
         binding.mainBottomNavigation.run {
             setOnNavigationItemSelectedListener {
@@ -60,6 +61,8 @@ class MainActivity : AppCompatActivity() {
             selectedItemId = R.id.my_groupChat_menu
         }
     }
+
+    /* Push Notification 시 groupChannelURL 데이터 전달 */
     private fun checkIntentExtra() {
         val fragment = groupChatListFragment
         if (intent.hasExtra("groupChannelUrl")) {
@@ -75,14 +78,7 @@ class MainActivity : AppCompatActivity() {
         changeFragment(fragment)
     }
 
-//    private fun setDataAtFragment(fragment: Fragment, userID: String) {
-//        val bundle = Bundle()
-//        bundle.putString(INTENT_USER_ID, userID)
-//
-//        fragment.arguments = bundle
-//
-//    }
-
+    /* Fragment 전환 */
     private fun changeFragment(fragment : Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_Layout, fragment)
