@@ -13,17 +13,23 @@ import kr.co.iboss.chat.Utils.DateUtils
 import kr.co.iboss.chat.Utils.TextUtils
 import kr.co.iboss.chat.databinding.ListItemGroupChatRoomBinding
 
-class GroupChatListAdapter(listener: OnChannelClickedListener) : RecyclerView.Adapter<GroupChatListAdapter.GroupChatListHolder>() {
+class GroupChatListAdapter(clickedListener: OnChannelClickedListener, longClickedListener: OnChannelLongClickedListener) : RecyclerView.Adapter<GroupChatListAdapter.GroupChatListHolder>() {
     interface OnChannelClickedListener {
         fun onItemClicked(channel : GroupChannel)
     }
 
-    private val listener : OnChannelClickedListener
+    interface OnChannelLongClickedListener {
+        fun onItemLongClicked(channel : GroupChannel)
+    }
+
+    private val channelClickedListener : OnChannelClickedListener
+    private val channelLongClickListener : OnChannelLongClickedListener
     private var channels : MutableList<GroupChannel>
 
     init {
         channels = ArrayList()
-        this.listener = listener
+        this.channelClickedListener = clickedListener
+        this.channelLongClickListener = longClickedListener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : GroupChatListHolder {
@@ -33,7 +39,7 @@ class GroupChatListAdapter(listener: OnChannelClickedListener) : RecyclerView.Ad
 
 
     override fun onBindViewHolder(holder: GroupChatListHolder, position: Int) {
-        holder.bindItems(channels[position], listener)
+        holder.bindItems(channels[position], channelClickedListener, channelLongClickListener)
     }
 
     override fun getItemCount(): Int {
@@ -66,7 +72,7 @@ class GroupChatListAdapter(listener: OnChannelClickedListener) : RecyclerView.Ad
 
     inner class GroupChatListHolder (var binding : ListItemGroupChatRoomBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bindItems(groupChannel : GroupChannel, listener : OnChannelClickedListener) { //listener : OnChannelClickedListener
+        fun bindItems(groupChannel : GroupChannel, clickedListener : OnChannelClickedListener, longClickedListener: OnChannelLongClickedListener) { //listener : OnChannelClickedListener
             // Channel Cover Image
             setChannelImage(groupChannel)
 
@@ -113,11 +119,16 @@ class GroupChatListAdapter(listener: OnChannelClickedListener) : RecyclerView.Ad
             }
 
             binding.groupChannelRoomContainer.setOnClickListener {
-                listener.onItemClicked(groupChannel)
+                clickedListener.onItemClicked(groupChannel)
+            }
+
+            binding.groupChannelRoomContainer.setOnLongClickListener {
+                longClickedListener.onItemLongClicked(groupChannel)
+                true
             }
         }
 
-        fun setChannelImage(channel : GroupChannel) {
+        private fun setChannelImage(channel : GroupChannel) {
             Glide
                 .with(binding.root.context)
                 .load(channel.coverUrl)

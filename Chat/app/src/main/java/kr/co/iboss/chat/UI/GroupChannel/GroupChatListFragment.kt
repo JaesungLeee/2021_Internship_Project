@@ -1,17 +1,20 @@
 package kr.co.iboss.chat.UI.GroupChannel
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sendbird.android.*
 import kr.co.iboss.chat.UI.GroupChannel.Adapter.GroupChatListAdapter
+import kr.co.iboss.chat.UI.MainActivity
 import kr.co.iboss.chat.Utils.ConnectionUtils
 import kr.co.iboss.chat.databinding.FragmentGroupChatListBinding
 
@@ -21,7 +24,7 @@ import kr.co.iboss.chat.databinding.FragmentGroupChatListBinding
  * create an instance of this fragment.
  */
 
-class GroupChatListFragment : Fragment(), GroupChatListAdapter.OnChannelClickedListener {
+class GroupChatListFragment : Fragment(), GroupChatListAdapter.OnChannelClickedListener, GroupChatListAdapter.OnChannelLongClickedListener {
 
     companion object {
         private val EXTRA_CHANNEL_URL           = "EXTRA_CHANNEL_URL"
@@ -31,6 +34,7 @@ class GroupChatListFragment : Fragment(), GroupChatListAdapter.OnChannelClickedL
         private val CHANNEL_LIMIT               = 10
     }
 
+    lateinit var mainActivityContext : MainActivity
     lateinit var gChatListAdapter : GroupChatListAdapter
     private var gChannelListQuery : GroupChannelListQuery? = null
 
@@ -51,6 +55,12 @@ class GroupChatListFragment : Fragment(), GroupChatListAdapter.OnChannelClickedL
         }
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        mainActivityContext = context as MainActivity
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         Log.e("LIFECYCLE", "ONCREATEVIEW")
         // Inflate the layout for this fragment
@@ -68,7 +78,7 @@ class GroupChatListFragment : Fragment(), GroupChatListAdapter.OnChannelClickedL
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.e("LIFECYCLE", "ONVIEWCREATED")
 
-        gChatListAdapter = GroupChatListAdapter(this)
+        gChatListAdapter = GroupChatListAdapter(this, this)
         setUpRecyclerView()
         refresh()
 
@@ -183,6 +193,30 @@ class GroupChatListFragment : Fragment(), GroupChatListAdapter.OnChannelClickedL
 
     }
 
+    private fun showLeaveChannelDialog(channel: GroupChannel) {
+        Log.e("ENTER", "ETN")
+        val dialogOptions = arrayOf("채팅방 나가기")
+
+        val builder = AlertDialog.Builder(mainActivityContext)
+        builder.setItems(dialogOptions) {dialog, which ->
+            if (which == 0) {
+                leaveChannel(channel)
+            }
+        }
+
+        builder.create().show()
+    }
+
+    private fun leaveChannel(channel: GroupChannel) {
+        channel.leave { e ->
+            if (e != null) {
+                return@leave
+            }
+
+            refresh()
+        }
+    }
+
     override fun onItemClicked(channel: GroupChannel) {
         activity?.let {
             val intent = Intent(fragGroupChatListBinding!!.root.context, GroupChatActivity::class.java).apply {
@@ -191,5 +225,10 @@ class GroupChatListFragment : Fragment(), GroupChatListAdapter.OnChannelClickedL
             }
             startActivity(intent)
         }
+    }
+
+    override fun onItemLongClicked(channel: GroupChannel) {
+        Log.e("Test", "TEST")
+        showLeaveChannelDialog(channel)
     }
 }
