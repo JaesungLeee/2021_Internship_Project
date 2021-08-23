@@ -2,6 +2,9 @@ package kr.co.iboss.chat.HTTP
 
 import com.google.gson.annotations.SerializedName
 
+/*
+ * JSON Data Response 처리 DTO
+ */
 data class LoginResponse(
     @SerializedName("statusCode") val code : String,
     @SerializedName("statusMessage") val message : String,
