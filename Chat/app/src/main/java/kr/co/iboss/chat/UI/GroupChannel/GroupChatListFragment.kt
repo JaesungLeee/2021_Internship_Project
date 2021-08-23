@@ -25,6 +25,7 @@ class GroupChatListFragment : Fragment(), GroupChatListAdapter.OnChannelClickedL
 
     companion object {
         private val EXTRA_CHANNEL_URL           = "EXTRA_CHANNEL_URL"
+        private val EXTRA_CHANNEL_NAME          = "EXTRA_CHANNEL_NAME"
         private val CHANNEL_HANDLER_ID          = "CHANNEL_HANDLER_GROUP_CHANNEL_LIST"
         private val CONNECTION_HANDLER_ID       = "CONNECTION_HANDLER_GROUP_CHANNEL_LIST"
         private val CHANNEL_LIMIT               = 10
@@ -186,7 +187,7 @@ class GroupChatListFragment : Fragment(), GroupChatListAdapter.OnChannelClickedL
         activity?.let {
             val intent = Intent(fragGroupChatListBinding!!.root.context, GroupChatActivity::class.java).apply {
                 putExtra(EXTRA_CHANNEL_URL, channel.url)
-                putExtra("Aa", channel.name)
+                putExtra(EXTRA_CHANNEL_NAME, channel.name)
             }
             startActivity(intent)
         }

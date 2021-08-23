@@ -35,6 +35,7 @@ import java.io.File
 class GroupChatActivity : AppCompatActivity() {
 
     private val EXTRA_CHANNEL_URL = "EXTRA_CHANNEL_URL"
+    private val EXTRA_CHANNEL_NAME = "EXTRA_CHANNEL_NAME"
     private val CONNECTION_HANDLER_ID = "CONNECTION_HANDLER_GROUP_CHAT"
     private val CHANNEL_HANDLER_ID = "CHANNEL_HANDLER_GROUP_CHANNEL_CHAT"
     private val STATE_CHANNEL_URL = "STATE_CHANNEL_URL"
@@ -571,7 +572,7 @@ class GroupChatActivity : AppCompatActivity() {
     }
 
     private fun setChannelTitle() {
-        val channelName = intent.getStringExtra("Aa").toString()
+        val channelName = intent.getStringExtra(EXTRA_CHANNEL_NAME).toString()
         binding.groupChannelChatTitleTV.text = channelName
     }
 }
