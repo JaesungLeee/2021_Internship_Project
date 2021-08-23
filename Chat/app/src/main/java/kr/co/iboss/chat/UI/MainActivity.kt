@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
     /* BottomNavigationBar 세팅 */
     private fun initFragmentNavigation() {
         binding.mainBottomNavigation.run {
-            setOnNavigationItemSelectedListener {
+            setOnItemSelectedListener {
                 when(it.itemId) {
 //                    R.id.all_openChat_menu  -> setDataAtFragment(allOpenChatListFragment, userID)
 //                    R.id.my_openChat_menu   -> setDataAtFragment(openChatListFragment, userID)
