@@ -48,7 +48,7 @@ class GroupChatListFragment : Fragment(), GroupChatListAdapter.OnChannelClickedL
         }
 
         if (groupChannelUrl != null) {
-            val channelIntent = Intent(fragGroupChatListBinding!!.root.context, GroupChatActivity::class.java)
+            val channelIntent = Intent(mainActivityContext, GroupChatActivity::class.java)
             channelIntent.putExtra("groupChannelUrl", groupChannelUrl)
             startActivity(channelIntent)
 
@@ -129,12 +129,12 @@ class GroupChatListFragment : Fragment(), GroupChatListAdapter.OnChannelClickedL
     private fun setUpRecyclerView() {
 
         fragGroupChatListBinding!!.groupChannelRV.adapter = gChatListAdapter
-        fragGroupChatListBinding!!.groupChannelRV.layoutManager = LinearLayoutManager(fragGroupChatListBinding!!.root.context)
-        fragGroupChatListBinding!!.groupChannelRV.addItemDecoration(DividerItemDecoration(fragGroupChatListBinding!!.root.context, DividerItemDecoration.VERTICAL))
+        fragGroupChatListBinding!!.groupChannelRV.layoutManager = LinearLayoutManager(mainActivityContext)
+        fragGroupChatListBinding!!.groupChannelRV.addItemDecoration(DividerItemDecoration(mainActivityContext,  DividerItemDecoration.VERTICAL))
 
         fragGroupChatListBinding!!.groupChannelRV.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (LinearLayoutManager(fragGroupChatListBinding!!.root.context).findLastVisibleItemPosition() == gChatListAdapter!!.itemCount - 1) {
+                if (LinearLayoutManager(mainActivityContext).findLastVisibleItemPosition() == gChatListAdapter!!.itemCount - 1) {
                     loadNextChannelList()
                 }
             }
@@ -219,7 +219,7 @@ class GroupChatListFragment : Fragment(), GroupChatListAdapter.OnChannelClickedL
 
     override fun onItemClicked(channel: GroupChannel) {
         activity?.let {
-            val intent = Intent(fragGroupChatListBinding!!.root.context, GroupChatActivity::class.java).apply {
+            val intent = Intent(mainActivityContext, GroupChatActivity::class.java).apply {
                 putExtra(EXTRA_CHANNEL_URL, channel.url)
                 putExtra(EXTRA_CHANNEL_NAME, channel.name)
             }
