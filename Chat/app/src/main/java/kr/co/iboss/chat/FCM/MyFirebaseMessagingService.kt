@@ -23,7 +23,13 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.util.concurrent.atomic.AtomicReference
 
-
+/*
+ * Push Notification 관련 Class
+ *
+ * 디바이스 토큰 발급 및 전송
+ * Notification Remote Message 파싱
+ * Push Message 생성 및 전송
+ */
 class MyFirebaseMessagingService : SendBirdPushHandler() {
 
     companion object {
