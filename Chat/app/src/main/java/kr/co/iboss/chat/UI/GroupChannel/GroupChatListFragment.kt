@@ -18,12 +18,9 @@ import kr.co.iboss.chat.UI.MainActivity
 import kr.co.iboss.chat.Utils.ConnectionUtils
 import kr.co.iboss.chat.databinding.FragmentGroupChatListBinding
 
-/**
- * A simple [Fragment] subclass.
- * Use the [GroupChatListFragment.newInstance] factory method to
- * create an instance of this fragment.
+/*
+ * 사용자가 참여 중인 GroupChannel의 전체 리스트를 보여주는 Fragment
  */
-
 class GroupChatListFragment : Fragment(), GroupChatListAdapter.OnChannelClickedListener, GroupChatListAdapter.OnChannelLongClickedListener {
 
     companion object {
@@ -44,10 +41,10 @@ class GroupChatListFragment : Fragment(), GroupChatListAdapter.OnChannelClickedL
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            groupChannelUrl = it.getString("groupChannelUrl")
+            groupChannelUrl = it.getString("groupChannelUrl")   // Push 상태일 때 MainActivity에서 전달받은 groupChannelUrl 수신
         }
 
-        if (groupChannelUrl != null) {
+        if (groupChannelUrl != null) {      // Push 상태일 때 groupChannelUrl이 있으면 자동으로 화면 전환
             val channelIntent = Intent(mainActivityContext, GroupChatActivity::class.java)
             channelIntent.putExtra("groupChannelUrl", groupChannelUrl)
             startActivity(channelIntent)
@@ -62,8 +59,6 @@ class GroupChatListFragment : Fragment(), GroupChatListAdapter.OnChannelClickedL
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        Log.e("LIFECYCLE", "ONCREATEVIEW")
-        // Inflate the layout for this fragment
         val binding = FragmentGroupChatListBinding.inflate(inflater, container, false)
         fragGroupChatListBinding = binding
         return fragGroupChatListBinding!!.root
@@ -71,13 +66,10 @@ class GroupChatListFragment : Fragment(), GroupChatListAdapter.OnChannelClickedL
 
     override fun onDestroyView() {
         fragGroupChatListBinding = null     // 메모리 관리 (Fragment가 사라질때 binding 객체가 사라짐)
-        Log.e("LIFECYCLE", "ONDESTROYVIEW")
         super.onDestroyView()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.e("LIFECYCLE", "ONVIEWCREATED")
-
         gChatListAdapter = GroupChatListAdapter(this, this)
         setUpRecyclerView()
         refresh()
@@ -86,8 +78,6 @@ class GroupChatListFragment : Fragment(), GroupChatListAdapter.OnChannelClickedL
     }
 
     override fun onResume() {
-        Log.e("LIFECYCLE", "ONRESUME")
-
         ConnectionUtils.addConnectionManagementHandler(CONNECTION_HANDLER_ID, object : ConnectionUtils.ConnectionManagementHandler {
             override fun onConnected(reconnect: Boolean) {
                 refresh()
@@ -112,8 +102,6 @@ class GroupChatListFragment : Fragment(), GroupChatListAdapter.OnChannelClickedL
     }
 
     override fun onPause() {
-        Log.e("LIFECYCLE", "ONPAUSE")
-
         ConnectionUtils.removeConnectionManagementHandler(CONNECTION_HANDLER_ID)
         SendBird.removeChannelHandler(CHANNEL_HANDLER_ID)
         super.onPause()
@@ -142,17 +130,6 @@ class GroupChatListFragment : Fragment(), GroupChatListAdapter.OnChannelClickedL
 
         refresh()
     }
-
-//    private fun leaveChannel(channel : GroupChannel) {
-//        channel.leave(GroupChannel.GroupChannelLeaveHandler { e ->
-//            if (e != null) {
-//                e.printStackTrace()
-//                return@GroupChannelLeaveHandler
-//            }
-//
-//            refresh()
-//        })
-//    }
 
     private fun refresh() {
         refreshChannelList(CHANNEL_LIMIT)
@@ -193,8 +170,8 @@ class GroupChatListFragment : Fragment(), GroupChatListAdapter.OnChannelClickedL
 
     }
 
+    /* 채팅방을 길게 눌렀을 때 Dialog 생성 Method */
     private fun showLeaveChannelDialog(channel: GroupChannel) {
-        Log.e("ENTER", "ETN")
         val dialogOptions = arrayOf("채팅방 나가기")
 
         val builder = AlertDialog.Builder(mainActivityContext)
@@ -228,7 +205,6 @@ class GroupChatListFragment : Fragment(), GroupChatListAdapter.OnChannelClickedL
     }
 
     override fun onItemLongClicked(channel: GroupChannel) {
-        Log.e("Test", "TEST")
         showLeaveChannelDialog(channel)
     }
 }

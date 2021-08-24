@@ -13,6 +13,9 @@ import kr.co.iboss.chat.Utils.DateUtils
 import kr.co.iboss.chat.Utils.TextUtils
 import kr.co.iboss.chat.databinding.ListItemGroupChatRoomBinding
 
+/**
+ * GroupChatListFragment RecyclerView의 Adapter Class
+ */
 class GroupChatListAdapter(clickedListener: OnChannelClickedListener, longClickedListener: OnChannelLongClickedListener) : RecyclerView.Adapter<GroupChatListAdapter.GroupChatListHolder>() {
     interface OnChannelClickedListener {
         fun onItemClicked(channel : GroupChannel)
@@ -37,7 +40,6 @@ class GroupChatListAdapter(clickedListener: OnChannelClickedListener, longClicke
         return GroupChatListHolder(binding)
     }
 
-
     override fun onBindViewHolder(holder: GroupChatListHolder, position: Int) {
         holder.bindItems(channels[position], channelClickedListener, channelLongClickListener)
     }
@@ -46,17 +48,28 @@ class GroupChatListAdapter(clickedListener: OnChannelClickedListener, longClicke
         return channels.size
     }
 
-
+    /**
+     * RecyclerView UI상에 그룹채널의 리스트가 보이게 하는 Method
+     * @param channelList   그룹 채널 리스트
+    */
     fun setGroupChannelList(channelList : MutableList<GroupChannel>) {
         this.channels = channelList
         notifyDataSetChanged()
     }
 
+    /**
+     * Scroll을 내려서 다음 리스트를 불러올 때의 Method
+     * @param channel   그룹 채널
+     */
     fun addLast(channel : GroupChannel) {
         channels.add(channel)
         notifyDataSetChanged()
     }
 
+    /**
+     * Channel의 정보가 수정되는 경우
+     * @param channel   그룹 채널
+     */
     fun updateInsert(channel : GroupChannel) {
         if (channel !is GroupChannel) return
 
