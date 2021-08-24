@@ -17,8 +17,12 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
+/**
+ * GroupChatActivity RecyclerView의 Adapter Class
+ */
 class GroupChatAdapter(private var mContext: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    /* 메시지 타입별 Flag 선언*/
     companion object {
         private val VIEW_TYPE_USER_MESSAGE_ME                = 10
         private val VIEW_TYPE_USER_MESSAGE_OTHER             = 11
@@ -30,7 +34,7 @@ class GroupChatAdapter(private var mContext: Context) : RecyclerView.Adapter<Rec
     }
 
     private var mChannel : GroupChannel? = null
-    private val messages : MutableList<BaseMessage>
+    private val messages : MutableList<BaseMessage> // Message가 담길 리스트
     private val mFileMessageMap: HashMap<FileMessage, CircleProgressBar>
 
     private var itemClickListener : OnItemClickListener? = null
@@ -65,16 +69,19 @@ class GroupChatAdapter(private var mContext: Context) : RecyclerView.Adapter<Rec
         mChannel = channel
     }
 
-//    fun loadMessages(messages : MutableList<BaseMessage>) {
-//        this.messages = messages
-//        notifyDataSetChanged()
-//    }
-
+    /**
+     * 메시지 수신 시 Call되는 Method
+     * @param message   수신되는 메시지 : BaseMessage
+     */
     fun addFirst(message : BaseMessage) {
-        messages.add(0, message)
+        messages.add(0, message)    // Index를 0으로 주어 리스트의 맨 앞에 넣고 UI 상으로 하단에 가장 최근에 전송한 메시지가 보임
         notifyDataSetChanged()
     }
 
+    /**
+     * 메시지 삭제 시 Call되는 Method
+     * @param msgId     삭제 대상 메시지의 고유 Id
+     */
     fun delete(msgId : Long) {
         for (message in messages) {
             if (message.messageId == msgId) {
@@ -85,6 +92,10 @@ class GroupChatAdapter(private var mContext: Context) : RecyclerView.Adapter<Rec
         }
     }
 
+    /**
+     * 메시지 수정 시 Call되는 Method
+     * @param message   수정 대상 메시지 : BaseMessage
+     */
     fun update(message : BaseMessage) {
         var baseMessage : BaseMessage
 
@@ -92,14 +103,20 @@ class GroupChatAdapter(private var mContext: Context) : RecyclerView.Adapter<Rec
             baseMessage = messages[idx]
 
             if (message.messageId == baseMessage.messageId) {
-                messages.removeAt(idx)
-                messages.add(idx, message)
+                messages.removeAt(idx)      // 해당 메시지 삭제
+                messages.add(idx, message)  // idx 위치에 다시 수정 메시지 삽입
                 notifyDataSetChanged()
                 break
             }
         }
     }
 
+    /**
+     * RecyclerView Item의 타입을 결정하는 Override Method
+     * 메시지 종류에 따라 UI상에 보여질 Item을 구분함
+     * @param position      특정 메시지
+     * @return VIEW_TYPE    타입 결정
+     */
     override fun getItemViewType(position: Int): Int {
         val message = messages.get(position)
 
@@ -125,6 +142,13 @@ class GroupChatAdapter(private var mContext: Context) : RecyclerView.Adapter<Rec
         }
     }
 
+    /**
+     * VIEW_TYPE 별 ViewHolder를 매칭 시키는 Override Method
+     * @param parent    부모 View Group
+     * @param viewType  VIEW_TYPE : Integer
+     * @return ViewHolder
+     * @see #getItemViewType()
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when (viewType) {
             VIEW_TYPE_USER_MESSAGE_ME -> {
@@ -207,17 +231,19 @@ class GroupChatAdapter(private var mContext: Context) : RecyclerView.Adapter<Rec
 
     override fun getItemCount() = messages.size
 
-    fun isTempMessage(message: BaseMessage) : Boolean {
-        return message.messageId == 0L
-    }
+    /**
+     * 메시지 마다 고유의 Id가 존재
+     * messageId가 0인 경우 비어있는 메시지로 판별
+     * @param message   메시지 Object
+     * @return T/F
+     */
+    fun isTempMessage(message: BaseMessage) : Boolean = message.messageId == 0L
 
     /**
-     * @since   21.07.21
-     * @param   message : BaseMessage
-     * @return  Boolean
-     *
      * 전송 실패된 Message id의 리스트의 index를 검사
      * index가 존재하면 isFailedMessage (return true)
+     * @param   message : BaseMessage
+     * @return  Boolean
      */
     fun isFailedMessage(message: BaseMessage) : Boolean {
         if (!isTempMessage(message)) {
@@ -245,11 +271,13 @@ class GroupChatAdapter(private var mContext: Context) : RecyclerView.Adapter<Rec
         notifyDataSetChanged()
     }
 
+    /* 전송 실패된 메시지를 failedMessages 리스트에 담는 Method */
     fun markMessageFailed(requestId: String) {
         failedMessages.add(requestId)
         notifyDataSetChanged()
     }
 
+    /* 전송 실패된 메시지 삭제하는 Method */
     fun removeFailedMessage(message : BaseMessage) {
         if (message is UserMessage) {
             failedMessages.remove(message.requestId)
@@ -263,6 +291,11 @@ class GroupChatAdapter(private var mContext: Context) : RecyclerView.Adapter<Rec
         notifyDataSetChanged()
     }
 
+    /**
+     * 채팅 UI Scroll 시 이전 메시지 불러오는 Method
+     * @param limit     로딩할 이전 메시지 갯수
+     * @param handler   BaseChannel Handler
+     */
     fun loadPreviousMessages(limit : Int, handler : BaseChannel.GetMessagesHandler?) {
         if (isMessageListLoading) {
             return
@@ -270,9 +303,10 @@ class GroupChatAdapter(private var mContext: Context) : RecyclerView.Adapter<Rec
 
         var oldestMessageCreated = Long.MAX_VALUE
         if (messages.size > 0) {
-            oldestMessageCreated = messages[messages.size - 1].createdAt
+            oldestMessageCreated = messages[messages.size - 1].createdAt        // 로딩할 메시지가 있으면 해당 메시지의 timestamp를 Long type으로 세팅
         }
 
+        /* 이전 메시지를 Timestamp 기준으로 가져옴 */
         isMessageListLoading = true
         mChannel!!.getPreviousMessagesByTimestamp(oldestMessageCreated, false, limit, true, BaseChannel.MessageTypeFilter.ALL, null, BaseChannel.GetMessagesHandler { list, e ->
             handler?.onResult(list, e)
@@ -291,6 +325,7 @@ class GroupChatAdapter(private var mContext: Context) : RecyclerView.Adapter<Rec
         } )
     }
 
+    /* 수정, 삭제 이후 Call되는 최근 메시지 불러오는 Method */
     fun loadLatestMessages(limit : Int, handler : BaseChannel.GetMessagesHandler?) {
         if (isMessageListLoading) {
             return
@@ -431,6 +466,7 @@ class GroupChatAdapter(private var mContext: Context) : RecyclerView.Adapter<Rec
         itemClickListener = listener
     }
 
+    /* 사용자가 보낸 UserMessage ViewHolder */
     private inner class MyUserMessageHolder (val binding : ListItemGroupChatUserMeBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindViews(context : Context?, message : UserMessage, channel : GroupChannel?, isNewDay: Boolean, isTempMessage : Boolean, isContinuous: Boolean, isFailedMessage : Boolean, clickListener : OnItemClickListener?, longClickListener : OnItemLongClickListener?, position : Int) {
             setMessage(message)
@@ -496,6 +532,7 @@ class GroupChatAdapter(private var mContext: Context) : RecyclerView.Adapter<Rec
         }
     }
 
+    /* 상대가 보내는 UserMessage ViewHolder */
     private inner class OtherUserMessageHolder(val binding: ListItemGroupChatUserOtherBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindViews(context: Context, userMessage: UserMessage, channel: GroupChannel?, isNewDay: Boolean, isContinuous: Boolean, clickListener : OnItemClickListener?, longClickListener : OnItemLongClickListener?, position: Int) {
             setMessage(userMessage)
@@ -565,6 +602,7 @@ class GroupChatAdapter(private var mContext: Context) : RecyclerView.Adapter<Rec
         }
     }
 
+    /* 사용자가 보낸 FileMessage ViewHolder */
     private inner class MyFileMessageHolder(val binding: ListItemGroupChatFileMeBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindViews(context: Context?, fileMessage: FileMessage, channel: GroupChannel?, isNewDay: Boolean, isTempMessage: Boolean, isFailedMessage: Boolean, tempFileMessageUri: Uri?, listener : OnItemClickListener? ) {
             setFileName(fileMessage)
@@ -623,6 +661,7 @@ class GroupChatAdapter(private var mContext: Context) : RecyclerView.Adapter<Rec
         }
     }
 
+    /* 상대가 보내는 FileMessage ViewHolder */
     private inner class OtherFileMessageHolder(val binding: ListItemGroupChatFileOtherBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindViews(context: Context, fileMessage: FileMessage, channel: GroupChannel?, isNewDay: Boolean, isContinuous: Boolean, listener: OnItemClickListener?) {
             setFileName(fileMessage)
@@ -687,6 +726,7 @@ class GroupChatAdapter(private var mContext: Context) : RecyclerView.Adapter<Rec
         }
     }
 
+    /* 사용자가 보낸 FileMessage (Image) ViewHolder */
     private inner class MyImageFileMessageHolder(val binding: ListItemGroupFileImageMessageMeBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindViews(context: Context, fileMessage: FileMessage, channel: GroupChannel?, isNewDay: Boolean, isTempMessage: Boolean, isFailedMessage: Boolean, tempFileMessageUri: Uri?, listener: OnItemClickListener?) {
             setChatTime(fileMessage)
@@ -769,6 +809,7 @@ class GroupChatAdapter(private var mContext: Context) : RecyclerView.Adapter<Rec
         }
     }
 
+    /* 상대가 보낸 FileMessage (Image) ViewHolder */
     private inner class OtherImageFileMessageHolder(val binding: ListItemGroupFileImageMessageOtherBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindViews(context: Context, fileMessage: FileMessage, channel: GroupChannel?, isNewDay: Boolean, isContinuous: Boolean, listener : OnItemClickListener?) {
             setChatTime(fileMessage)
@@ -845,6 +886,7 @@ class GroupChatAdapter(private var mContext: Context) : RecyclerView.Adapter<Rec
         }
     }
 
+    /* AdminMessage ViewHolder */
     private inner class AdminMessageHolder(val binding : ListItemGroupChatAdminMessageBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindViews(context: Context, adminMessage: AdminMessage, channel: GroupChannel?, isNewDay: Boolean) {
             setMessage(adminMessage)

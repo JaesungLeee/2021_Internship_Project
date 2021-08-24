@@ -51,7 +51,7 @@ class GroupChatActivity : AppCompatActivity() {
     private lateinit var mChannelURL : String
 
     private var mFileProgressHandlerMap: HashMap<BaseChannel.SendFileMessageWithProgressHandler, FileMessage>? = null
-    private var mIMM : InputMethodManager? = null
+    private var mIMM : InputMethodManager? = null   //키보드 제어 기능 제공 Class
     private var mCurrentState = STATE_NORMAL
     private var mEditingMessage: BaseMessage? = null
     private var mChannel : GroupChannel? = null
@@ -68,15 +68,14 @@ class GroupChatActivity : AppCompatActivity() {
         mIMM = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         mFileProgressHandlerMap = HashMap<BaseChannel.SendFileMessageWithProgressHandler, FileMessage>()
 
+        /* ChannelURL을 Activity 종료시 저장하거나 전달 받는 intent로 받아오게 처리 */
         mChannelURL = if (savedInstanceState != null) {
             savedInstanceState.getString(STATE_CHANNEL_URL).toString()
         } else {
             intent.getStringExtra(EXTRA_CHANNEL_URL).toString()
         }
 
-        Log.e("URL", mChannelURL)
-
-
+//        Log.e("URL", mChannelURL)
         setChannelTitle()
         setUpRecyclerView()
         setUpChatListAdapter()
@@ -90,6 +89,7 @@ class GroupChatActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
     }
 
+    /* Activity가 일시 중지되는 경우의 Method */
     override fun onPause() {
         super.onPause()
         ConnectionUtils.removeConnectionManagementHandler(CONNECTION_HANDLER_ID)
@@ -97,6 +97,7 @@ class GroupChatActivity : AppCompatActivity() {
         Log.e("ONPAUSE", "Done")
     }
 
+    /* Activity가 실행 중인 경우의 Method */
     override fun onResume() {
         super.onResume()
         Log.e("ONRESUME", mChannelURL)
@@ -112,8 +113,7 @@ class GroupChatActivity : AppCompatActivity() {
 
         mChannelURL = getChannelURL()
 
-
-
+        /* 메시지 처리 Method */
         SendBird.addChannelHandler(CHANNEL_HANDLER_ID, object : SendBird.ChannelHandler() {
             override fun onMessageReceived(baseChannel: BaseChannel, baseMesage: BaseMessage) {
                 if (baseChannel.url == mChannelURL) {
@@ -158,6 +158,7 @@ class GroupChatActivity : AppCompatActivity() {
         }
     }
 
+    /* RecyclerView 초기 세팅 Method*/
     private fun setUpRecyclerView() {
         adapter = GroupChatAdapter(this)
         recyclerView = binding.groupChannelChatRV
@@ -257,6 +258,7 @@ class GroupChatActivity : AppCompatActivity() {
         binding.groupChannelUploadContentsBtn.setOnClickListener { requestMedia() }
     }
 
+    /* 채팅방 Option 버튼을 클릭했을 때 Method */
     private fun showChatInfoDialog() {
         val dialogOptions = arrayOf("멤버 초대하기", "채팅 멤버보기")
 
@@ -279,6 +281,7 @@ class GroupChatActivity : AppCompatActivity() {
         builder.create().show()
     }
 
+    /* 사용자가 보낸 Message를 길게 누른 경우 */
     private fun showMessageOptionDialog(message : BaseMessage, position: Int) {
         val dialogOptions = arrayOf("수정하기", "삭제하기")
 
@@ -318,6 +321,7 @@ class GroupChatActivity : AppCompatActivity() {
             }.show()
     }
 
+    /* editText의 상태를 전환해주는 Method */
     private fun setState(state : Int, editMessage : BaseMessage, position: Int) {
         when (state) {
             STATE_NORMAL -> {
@@ -526,19 +530,6 @@ class GroupChatActivity : AppCompatActivity() {
                 .setNegativeButton("아니오", null).show()
         }
     }
-
-//    private fun getMessages() {
-//        val previousMessageListQuery = mChannel!!.createPreviousMessageListQuery()
-//
-//        previousMessageListQuery.load(100, true) { messages, e ->
-//            if (e != null) {
-//                Log.e("GETMESSAGE", "LOAD_FAILED")
-//                return@load
-//            }
-//
-//            adapter.loadMessages(messages)
-//        }
-//    }
 
     private fun editMessage(message: BaseMessage?, editedMessage : String) {
         mChannel!!.updateUserMessage(message!!.messageId, editedMessage, null, null, BaseChannel.UpdateUserMessageHandler { userMessage, e ->
