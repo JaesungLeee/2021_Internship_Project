@@ -66,7 +66,6 @@
         <activity android:name=".UI.Media.VideoViewActivity" />
         <activity android:name=".UI.Media.PhotoViewActivity" />
         <activity android:name=".UI.GroupChannel.GroupChatActivity" />
-        <activity android:name=".UI.GroupChannel.GroupChatSettingsActivity" />
         <activity android:name=".UI.GroupChannel.GroupMemberInfoActivity" />
         <activity android:name=".UI.GroupChannel.GroupMemberListActivity" />
         <activity android:name=".UI.GroupChannel.InviteGroupMemberActivity" />
