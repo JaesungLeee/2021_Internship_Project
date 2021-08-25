@@ -12,19 +12,18 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.BitmapImageViewTarget
 
-
+/* 이미지 Display 관련 Image Utils*/
 object ImageUtils {
 
     // Prevent instantiation
     private fun ImageUtils() {}
 
-    /**
-     * Crops image into a circle that fits within the ImageView.
-     */
+    /* Image를 담고 있는 URL을 이용하여 ImageView에 원형으로 보이는 Method */
     fun displayRoundImageFromUrl(context: Context, url: String?, imageView: ImageView) {
         val myOptions = RequestOptions()
             .centerCrop()
             .dontAnimate()
+
         Glide.with(context)
             .asBitmap()
             .apply(myOptions)
@@ -39,20 +38,12 @@ object ImageUtils {
             })
     }
 
-    fun displayImageFromUrl(
-        context: Context?, url: String?,
-        imageView: ImageView?, placeholderDrawable: Drawable?
-    ) {
+    fun displayImageFromUrl(context: Context?, url: String?, imageView: ImageView?, placeholderDrawable: Drawable?) {
         displayImageFromUrl(context, url, imageView, placeholderDrawable, null)
     }
 
-    /**
-     * Displays an image from a URL in an ImageView.
-     */
-    fun displayImageFromUrl(
-        context: Context?, url: String?,
-        imageView: ImageView?, placeholderDrawable: Drawable?, listener: RequestListener<*>?
-    ) {
+    /* Image를 담고 있는 URL을 이용하여 ImageView에 보이는 Method */
+    fun displayImageFromUrl(context: Context?, url: String?, imageView: ImageView?, placeholderDrawable: Drawable?, listener: RequestListener<*>?) {
         val myOptions = RequestOptions()
             .dontAnimate()
             .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
@@ -63,7 +54,8 @@ object ImageUtils {
                 .apply(myOptions)
                 .listener(listener as RequestListener<Drawable>?)
                 .into(imageView!!)
-        } else {
+        }
+        else {
             Glide.with(context!!)
                 .load(url)
                 .apply(myOptions)
@@ -72,22 +64,18 @@ object ImageUtils {
         }
     }
 
-    fun displayRoundImageFromUrlWithoutCache(
-        context: Context, url: String?,
-        imageView: ImageView
-    ) {
+    fun displayRoundImageFromUrlWithoutCache(context: Context, url: String?, imageView: ImageView) {
         displayRoundImageFromUrlWithoutCache(context, url, imageView, null)
     }
 
-    fun displayRoundImageFromUrlWithoutCache(
-        context: Context, url: String?,
-        imageView: ImageView, listener: RequestListener<*>?
-    ) {
+    /* Image를 담고있는 URL을 이용하여 캐싱 없이 ImageView에 원형으로 표시하는 Method */
+    fun displayRoundImageFromUrlWithoutCache(context: Context, url: String?, imageView: ImageView, listener: RequestListener<*>?) {
         val myOptions = RequestOptions()
             .centerCrop()
             .dontAnimate()
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .skipMemoryCache(true)
+
         if (listener != null) {
             Glide.with(context)
                 .asBitmap()
@@ -102,7 +90,8 @@ object ImageUtils {
                         imageView.setImageDrawable(circularBitmapDrawable)
                     }
                 })
-        } else {
+        }
+        else {
             Glide.with(context)
                 .asBitmap()
                 .load(url)
@@ -118,40 +107,30 @@ object ImageUtils {
         }
     }
 
-    /**
-     * Displays an image from a URL in an ImageView.
-     * If the image is loading or nonexistent, displays the specified placeholder image instead.
+    /*
+     * Image를 담고 있는 URL을 이용하여 ImageView에 표시하는 Method
+     * Image가 존재하지 않으면 대체 이미지를 이용하여 표시
      */
-    fun displayImageFromUrlWithPlaceHolder(
-        context: Context?, url: String?,
-        imageView: ImageView?,
-        placeholderResId: Int
-    ) {
+    fun displayImageFromUrlWithPlaceHolder(context: Context?, url: String?, imageView: ImageView?, placeholderResId: Int) {
         val myOptions = RequestOptions()
             .dontAnimate()
             .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
             .placeholder(placeholderResId)
+
         Glide.with(context!!)
             .load(url)
             .apply(myOptions)
             .into(imageView!!)
     }
 
-    /**
-     * Displays an image from a URL in an ImageView.
-     */
-    fun displayGifImageFromUrl(
-        context: Context?,
-        url: String?,
-        imageView: ImageView?,
-        placeholderDrawable: Drawable?,
-        listener: RequestListener<*>?
-    ) {
+    /* GIF Image를 담고있는 URL을 이용하여 ImageView에 표시하는 Method */
+    fun displayGifImageFromUrl(context: Context?, url: String?, imageView: ImageView?, placeholderDrawable: Drawable?, listener: RequestListener<*>?) {
         val myOptions = RequestOptions()
             .dontAnimate()
             .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
             .dontAnimate()
             .placeholder(placeholderDrawable)
+
         if (listener != null) {
             Glide.with(context!!)
                 .asGif()
@@ -159,7 +138,8 @@ object ImageUtils {
                 .apply(myOptions)
                 .listener(listener as RequestListener<GifDrawable>?)
                 .into(imageView!!)
-        } else {
+        }
+        else {
             Glide.with(context!!)
                 .asGif()
                 .load(url)
@@ -168,29 +148,22 @@ object ImageUtils {
         }
     }
 
-    /**
-     * Displays an GIF image from a URL in an ImageView.
-     */
-    fun displayGifImageFromUrl(
-        context: Context?,
-        url: String?,
-        imageView: ImageView?,
-        thumbnailUrl: String?,
-        placeholderDrawable: Drawable?
-    ) {
+    fun displayGifImageFromUrl(context: Context?, url: String?, imageView: ImageView?, thumbnailUrl: String?, placeholderDrawable: Drawable?) {
         val myOptions = RequestOptions()
             .dontAnimate()
             .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
             .dontAnimate()
             .placeholder(placeholderDrawable)
+
         if (thumbnailUrl != null) {
             Glide.with(context!!)
                 .asGif()
                 .load(url)
                 .apply(myOptions)
-                .thumbnail(Glide.with(context!!).asGif().load(thumbnailUrl))
+                .thumbnail(Glide.with(context).asGif().load(thumbnailUrl))
                 .into(imageView!!)
-        } else {
+        }
+        else {
             Glide.with(context!!)
                 .asGif()
                 .load(url)
