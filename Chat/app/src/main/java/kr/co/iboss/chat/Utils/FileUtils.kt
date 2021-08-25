@@ -19,6 +19,7 @@ import kotlin.jvm.Throws
 import kotlin.math.log10
 import kotlin.math.pow
 
+/* 파일 다운로드, 경로 지정 관련 File Utils */
 object FileUtils {
     @TargetApi(Build.VERSION_CODES.KITKAT)
     fun getFileInfo(context : Context, uri : Uri) : Hashtable<String, Any>? {
