@@ -13,6 +13,7 @@ import com.bumptech.glide.request.target.Target
 import kr.co.iboss.chat.Utils.ImageUtils
 import kr.co.iboss.chat.databinding.ActivityPhotoViewBinding
 
+/* 이미지 파일 메시지를 클릭했을 때 이미지가 보여지는 Activity */
 class PhotoViewActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityPhotoViewBinding
@@ -35,6 +36,7 @@ class PhotoViewActivity : AppCompatActivity() {
 
     }
 
+    /* gif 이미지와 일반 이미지를 로딩하는 Method */
     private fun loadImage(url: String?, type: String?, imageView: ImageView, progressbar: ContentLoadingProgressBar) {
         if (type != null && type.lowercase().contains("gif")) {
             ImageUtils.displayGifImageFromUrl(this, url, imageView, null, object : RequestListener<Any?> {
