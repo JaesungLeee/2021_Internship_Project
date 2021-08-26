@@ -11,6 +11,7 @@ import kr.co.iboss.chat.Utils.ConnectionUtils
 import kr.co.iboss.chat.Utils.ImageUtils
 import kr.co.iboss.chat.databinding.ActivityGroupMemberInfoBinding
 
+/* Group Channel Member들의 정보를 볼 수 있는 Activity */
 class GroupMemberInfoActivity : AppCompatActivity() {
 
     companion object {
@@ -98,6 +99,7 @@ class GroupMemberInfoActivity : AppCompatActivity() {
         binding.groupMemberInfoBlockSwitch.isChecked = isBlockedByMe
     }
 
+    /* 다른 User를 Block할 수 있는 Method */
     private fun switchListener() {
         binding.groupMemberInfoBlockSwitch.setOnClickListener {
             if (binding.groupMemberInfoBlockSwitch.isChecked) {
