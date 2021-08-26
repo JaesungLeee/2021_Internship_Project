@@ -39,10 +39,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/* 소셜 로그인 Activity */
 class LoginHomeActivity : AppCompatActivity() {
 
     companion object {
-        private val INTENT_USER_ID              = "INTENT_USER_ID"
         private val NAVER_TYPE                  = "naver"
         private val KAKAO_TYPE                  = "kakao"
         private val FACEBOOK_TYPE               = "facebook"
@@ -91,6 +91,7 @@ class LoginHomeActivity : AppCompatActivity() {
         }
     }
 
+    /* 소셜 로그인 인스턴스 초기화 Method*/
     private fun socialInstanceInitialize(googleLoginBtn: SignInButton) {
         naverInstanceInitialize()
         facebookInstanceInitialize()
@@ -117,6 +118,7 @@ class LoginHomeActivity : AppCompatActivity() {
         googleLoginBtn.setSize(SignInButton.SIZE_WIDE)
     }
 
+    /* 버튼 리스너 */
     private fun buttonListener(naverLoginBtn: AppCompatButton, kakaoLoginBtn: AppCompatButton, googleLoginBtn: SignInButton, fbLoginBtn: LoginButton, emailLoginBtn: AppCompatButton) {
         naverLoginBtn.setOnClickListener {
             naverBtnListener()
@@ -141,6 +143,7 @@ class LoginHomeActivity : AppCompatActivity() {
 
 
 
+    /* 네이버 소셜 로그인 */
     private fun naverBtnListener() {
         val mOAuthLoginHandler : OAuthLoginHandler = object : OAuthLoginHandler() {
             override fun run(success: Boolean) {
@@ -162,6 +165,7 @@ class LoginHomeActivity : AppCompatActivity() {
         mOAuthLoginInstance.startOauthLoginActivity(this, mOAuthLoginHandler)
     }
 
+    /* 카카오 소셜 로그인 */
     private fun kakaoBtnListener() {
         val callback : ((OAuthToken?, Throwable?) -> Unit) = { token, e ->
             if (e != null) {
@@ -212,6 +216,7 @@ class LoginHomeActivity : AppCompatActivity() {
 
     }
 
+    /* 페이스북 소셜 로그인 */
     private fun facebookBtnListener(fbLoginBtn: LoginButton) {
         fbLoginBtn.setReadPermissions(listOf("email", "public_profile", "user_gender", "user_birthday", "user_friends"))
         fbLoginBtn.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
@@ -231,6 +236,7 @@ class LoginHomeActivity : AppCompatActivity() {
         })
     }
 
+    /* 구글 소셜 로그인 */
     private fun googleBtnListener(googleLoginBtn: SignInButton) {
         val signInIntent = mGoogleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
@@ -261,22 +267,13 @@ class LoginHomeActivity : AppCompatActivity() {
         }
     }
 
+    /* 소셜 로그인 정보 (token, type) 전달 Method */
     private fun retrofitService(type : String, accessToken : String) {
-        when(type) {
-            NAVER_TYPE -> {
-                mLoginType = NAVER_TYPE
-
-            }
-            KAKAO_TYPE -> {
-                mLoginType = KAKAO_TYPE
-            }
-            FACEBOOK_TYPE -> {
-                mLoginType = FACEBOOK_TYPE
-            }
-            GOOGLE_TYPE -> {
-                mLoginType = GOOGLE_TYPE
-            }
-
+        mLoginType = when(type) {
+            NAVER_TYPE -> NAVER_TYPE
+            KAKAO_TYPE -> KAKAO_TYPE
+            FACEBOOK_TYPE -> FACEBOOK_TYPE
+            GOOGLE_TYPE -> GOOGLE_TYPE
             else -> return
         }
 
@@ -306,6 +303,7 @@ class LoginHomeActivity : AppCompatActivity() {
             })
     }
 
+    /* User 기본 정보 디바이스 내 저장 Method */
     private fun setUserInfo(userID: String, userNickName: String, userProfileImage: String) {
         PreferencesUtils(this).apply {
             setUserId(userID)
@@ -314,6 +312,7 @@ class LoginHomeActivity : AppCompatActivity() {
         }
     }
 
+    /* SendBird 서버 연결 Method */
     private fun connectWithSendBird(userID: String, userNickName: String, userProfileImage: String) {
         ConnectionUtils.login(userID) { user, e ->
             if (e != null) {
@@ -326,7 +325,7 @@ class LoginHomeActivity : AppCompatActivity() {
         }
     }
 
-
+    /* User 정보 업데이트 Method */
     private fun updateCurrentUserInfo(userID: String, userNickName: String, userProfileImage: String) {
        SendBird.updateCurrentUserInfo(userNickName, userProfileImage) {
            setUserInfo(userID, userNickName, userProfileImage)

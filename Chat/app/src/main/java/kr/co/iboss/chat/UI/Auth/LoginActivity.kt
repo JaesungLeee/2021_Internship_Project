@@ -20,11 +20,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/* 일반 계정 로그인 Activity */
 class LoginActivity : AppCompatActivity() {
-
-    companion object {
-        private val INTENT_USER_ID              = "INTENT_USER_ID"
-    }
 
     private lateinit var binding     : ActivityLoginBinding
 
@@ -39,6 +36,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun buttonHandler() {
+        /* 로그인 버튼 클릭 리스너*/
         binding.loginBtn.setOnClickListener {
             val inputId = binding.loginIdET.text.toString()
             val inputPW = binding.loginPWET.text.toString()
@@ -48,7 +46,7 @@ class LoginActivity : AppCompatActivity() {
 //            loginRequestParams["id"] = inputId
 //            loginRequestParams["pw"] = inputPW
 
-            val loginRequestParams = EmailRequestDTO( id = inputId, pw= inputPW)
+            val loginRequestParams = EmailRequestDTO( id = inputId, pw= inputPW)    // RequestDTO를 Request Parameter로 생성
 
             if (!TextUtils.isEmpty(inputId) && !TextUtils.isEmpty(inputPW)) {
                 Log.e("LOGIN_RETROFIT", "START ACTION")
@@ -56,8 +54,8 @@ class LoginActivity : AppCompatActivity() {
                 RetrofitClient.instance.userLogin(loginRequestParams)
                     .enqueue(object : Callback<LoginResponse> {
                         override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                            if (response.isSuccessful) {
-                                if (response.code() == 200) {
+                            if (response.isSuccessful) {    // Request 성공 후 Response 수신
+                                if (response.code() == 200) {   // 정상 응답
                                     val loginResponse = response.body()
 
                                     Log.e("RESPONSE", loginResponse.toString())
@@ -71,14 +69,14 @@ class LoginActivity : AppCompatActivity() {
                             }
                         }
 
-                        override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                        override fun onFailure(call: Call<LoginResponse>, t: Throwable) {   // Request 실패
                             Toast.makeText(this@LoginActivity, "잠시 후에 다시 시도해주세요.", Toast.LENGTH_LONG).show()
                         }
                     })
             }
             else {
                 if (TextUtils.isEmpty(inputId)) Toast.makeText(this, "아이디를 입력하세요", Toast.LENGTH_LONG).show()
-                else Toast.makeText(this, "닉네임을 입력하세요.", Toast.LENGTH_LONG).show()
+                else Toast.makeText(this, "비밀번호를 입력하세요.", Toast.LENGTH_LONG).show()
             }
         }
 
@@ -90,21 +88,21 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
-
+    /* SendBird 서버 연결 Method */
     private fun connectWithSendBird(userId : String, userNickName: String, userProfileImg: String) {
         ConnectionUtils.login(userId) { user, e ->
             if (e != null) {
                 Log.e("SENDBIRD_CONNECT_ERR", "Code - ${e.code} \nMessage - ${e.message}")
             }
 
-            PreferencesUtils(this).setConnected(true)
-            PushUtils.registerPushHandler(MyFirebaseMessagingService())
+            PreferencesUtils(this).setConnected(true)   // 로그인 상태 설정 : True
+            PushUtils.registerPushHandler(MyFirebaseMessagingService())     // Push Handler 등록
             updateCurrentUserInfo(userId, userNickName, userProfileImg)
 
         }
     }
 
-
+    /* User 기본 정보 디바이스 내 저장 Method */
     private fun setUserInfo(userId: String, userNickName: String, userProfileImg : String) {
         PreferencesUtils(this).apply {
             setUserId(userId)
@@ -113,6 +111,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    /* User 정보 업데이트 Method */
     private fun updateCurrentUserInfo(userId: String, userNickName: String, userProfileImg: String) {
         SendBird.updateCurrentUserInfo(userNickName, userProfileImg) {
 
