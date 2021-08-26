@@ -13,6 +13,7 @@ import com.sendbird.android.UserListQuery
 import kr.co.iboss.chat.UI.GroupChannel.Adapter.InviteGroupMemberAdapter
 import kr.co.iboss.chat.databinding.ActivityInviteGroupMemberBinding
 
+/* 해당 그룹 채널에 Member를 초대하는 Activity */
 class InviteGroupMemberActivity : AppCompatActivity() {
     companion object {
         private val EXTRA_CHANNEL_URL = "EXTRA_CHANNEL_URL"
@@ -86,6 +87,7 @@ class InviteGroupMemberActivity : AppCompatActivity() {
         binding.groupMemberInviteBtn.isEnabled = false
     }
 
+    /* Member로 초대하는 Method */
     private fun inviteGroupMemberWithUserId() {
         GroupChannel.getChannel(mChannelURL, GroupChannel.GroupChannelGetHandler { groupChannel, e ->
             if (e != null) {
@@ -101,6 +103,8 @@ class InviteGroupMemberActivity : AppCompatActivity() {
             })
         })
     }
+
+    /* 초기 User List 로딩 Method */
     private fun loadFirstUserList(size: Int) {
         mMemberListQuery = SendBird.createUserListQuery()
 
@@ -114,6 +118,7 @@ class InviteGroupMemberActivity : AppCompatActivity() {
         })
     }
 
+    /* 스크롤 이벤트 이후 User List 로딩 Method*/
     private fun loadNextUserList(size : Int) {
         mMemberListQuery!!.setLimit(size)
 
