@@ -16,11 +16,7 @@ import kr.co.iboss.chat.Utils.PreferencesUtils
 import kr.co.iboss.chat.Utils.PushUtils
 import kr.co.iboss.chat.databinding.FragmentSettingsBinding
 
-/**
- * A simple [Fragment] subclass.
- * Use the [SettingsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+/* 어플리케이션 기본 설정 관련 Fragment */
 class SettingsFragment : Fragment() {
 
     private var mFragSettingsBinding : FragmentSettingsBinding? = null
@@ -31,12 +27,9 @@ class SettingsFragment : Fragment() {
         arguments?.let {
             //userId = it.getString(INTENT_USER_ID)
         }
-
-        //Log.e("SETTINGS_FRAG_INTENT", "id : $userId")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         val binding = FragmentSettingsBinding.inflate(inflater, container, false)
         mFragSettingsBinding = binding
         return mFragSettingsBinding!!.root
@@ -54,6 +47,7 @@ class SettingsFragment : Fragment() {
         }
     }
 
+    /* 로그아웃 Method */
     private fun logout() {
         PushUtils.unregisterPushHandler(object : OnPushRequestCompleteListener {
             override fun onComplete(isActive: Boolean, token: String?) {
