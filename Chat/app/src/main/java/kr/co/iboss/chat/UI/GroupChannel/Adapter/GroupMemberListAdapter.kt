@@ -17,6 +17,7 @@ import kr.co.iboss.chat.UI.GroupChannel.GroupMemberInfoActivity
 import kr.co.iboss.chat.Utils.ImageUtils
 import kr.co.iboss.chat.databinding.ListItemGroupChatMemberListBinding
 
+/* 채널에 속해있는 Member들을 보이는 GroupMemberListActivity의 RecyclerView Adapter Class */
 class GroupMemberListAdapter(private val mContext : Context, private val mChannelURL : String, private val isGroupChannel : Boolean) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
