@@ -7,6 +7,7 @@ import com.sendbird.android.SendBird
 import kr.co.iboss.chat.FCM.MyFirebaseMessagingService
 import kr.co.iboss.chat.Utils.PushUtils
 
+/* 어플리케이션 실행과 동시에 시작되는 Class */
 class BaseApplication : Application() {
     companion object {
         val APP_ID = "58427C21-8C26-4B1B-B13F-4159BF7D77AE"
@@ -21,6 +22,7 @@ class BaseApplication : Application() {
         sdkInitialize()
     }
 
+    /* 기본적인 SDK Initialize Method*/
     private fun sdkInitialize() {
         SendBird.init(APP_ID, applicationContext)
 
@@ -30,5 +32,6 @@ class BaseApplication : Application() {
         PushUtils.registerPushHandler(MyFirebaseMessagingService())
     }
 
+    /* application context instance 생성 */
     fun context() : Context = applicationContext
 }
